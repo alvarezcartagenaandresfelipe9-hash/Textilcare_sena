@@ -16,36 +16,50 @@ import java.awt.Cursor;
 
 import java.net.URL;
 
+/**
+ * Vista de registro de usuarios (RegistroUsuarioView) para TextilCare.
+ * Proporciona un formulario emergente reutilizable para registrar distintos roles 
+ * (como clientes o técnicos), capturando nombre, documento, correo, teléfono y contraseña inicial.
+ */
 public class RegistroUsuarioView extends JFrame {
 
+    // Componentes de entrada de texto e información sensible
     private JTextField txtNombre;
     private JTextField txtDocumento;
     private JTextField txtCorreo;
     private JTextField txtTelefono;
     private JPasswordField txtContrasena;
+    
+    // Botones de acción del formulario
     private JButton btnGuardar;
     private JButton btnCancelar;
 
-    private final Color cafe = new Color(181, 137, 103);
+    // Paleta de colores institucional compartida en el sistema
+    private final Color morado = new Color(155, 89, 182); // Color de acento institucional
 
+    /**
+     * Constructor principal: Inicializa la ventana de registro de usuarios configurando
+     * los componentes visuales según el rol especificado.
+     * @param rol Rol del usuario a registrar (ej. "Cliente", "Técnico").
+     */
     public RegistroUsuarioView(String rol) {
         setTitle("Registrar " + rol);
         setSize(500, 620);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(new Color(238, 232, 224));
+        getContentPane().setBackground(new Color(243, 237, 250));
 
-        // TITULO
+        // ── TÍTULO DE LA VENTANA ──
         JLabel titulo = new JLabel("Registrar " + rol, SwingConstants.CENTER);
         titulo.setBounds(0, 0, 500, 50);
         titulo.setFont(new Font("Serif", Font.BOLD, 22));
         titulo.setForeground(Color.WHITE);
-        titulo.setBackground(cafe);
+        titulo.setBackground(morado);
         titulo.setOpaque(true);
         add(titulo);
 
-        // LOGO
+        // ── LOGOTIPO INSTITUCIONAL ──
         JLabel lblLogo = new JLabel();
         lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
         lblLogo.setBounds(205, 55, 90, 90);
@@ -57,7 +71,7 @@ public class RegistroUsuarioView extends JFrame {
         }
         add(lblLogo);
 
-        // NOMBRE
+        // ── NOMBRE COMPLETO ──
         JLabel lblNombre = new JLabel("Nombre completo:");
         lblNombre.setBounds(40, 155, 200, 25);
         add(lblNombre);
@@ -66,7 +80,7 @@ public class RegistroUsuarioView extends JFrame {
         txtNombre.setBounds(40, 180, 400, 32);
         add(txtNombre);
 
-        // DOCUMENTO
+        // ── DOCUMENTO ──
         JLabel lblDocumento = new JLabel("Documento:");
         lblDocumento.setBounds(40, 220, 200, 25);
         add(lblDocumento);
@@ -75,7 +89,7 @@ public class RegistroUsuarioView extends JFrame {
         txtDocumento.setBounds(40, 245, 400, 32);
         add(txtDocumento);
 
-        // CORREO
+        // ── CORREO ELECTRÓNICO ──
         JLabel lblCorreo = new JLabel("Correo electronico:");
         lblCorreo.setBounds(40, 285, 200, 25);
         add(lblCorreo);
@@ -84,7 +98,7 @@ public class RegistroUsuarioView extends JFrame {
         txtCorreo.setBounds(40, 310, 400, 32);
         add(txtCorreo);
 
-        // TELEFONO
+        // ── TELÉFONO ──
         JLabel lblTelefono = new JLabel("Telefono:");
         lblTelefono.setBounds(40, 350, 200, 25);
         add(lblTelefono);
@@ -93,7 +107,7 @@ public class RegistroUsuarioView extends JFrame {
         txtTelefono.setBounds(40, 375, 400, 32);
         add(txtTelefono);
 
-        // CONTRASENA
+        // ── CONTRASEÑA INICIAL ──
         JLabel lblContrasena = new JLabel("Contrasena inicial:");
         lblContrasena.setBounds(40, 415, 200, 25);
         add(lblContrasena);
@@ -102,27 +116,30 @@ public class RegistroUsuarioView extends JFrame {
         txtContrasena.setBounds(40, 440, 400, 32);
         add(txtContrasena);
 
-        // BOTON GUARDAR
+        // ── BOTÓN GUARDAR ──
         btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(90, 500, 130, 40);
-        btnGuardar.setBackground(cafe);
+        btnGuardar.setBackground(morado);
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.setFont(new Font("Arial", Font.BOLD, 14));
         btnGuardar.setFocusPainted(false);
         btnGuardar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(btnGuardar);
 
-        // BOTON CANCELAR
+        // ── BOTÓN CANCELAR ──
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBounds(260, 500, 130, 40);
         btnCancelar.setBackground(Color.WHITE);
-        btnCancelar.setForeground(cafe);
+        btnCancelar.setForeground(morado);
         btnCancelar.setFont(new Font("Arial", Font.BOLD, 14));
         btnCancelar.setFocusPainted(false);
         btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(btnCancelar);
     }
 
+    /**
+     * Restablece todos los campos del formulario dejándolos en blanco después de realizar el registro.
+     */
     public void limpiarFormulario() {
         txtNombre.setText("");
         txtDocumento.setText("");
@@ -131,15 +148,24 @@ public class RegistroUsuarioView extends JFrame {
         txtContrasena.setText("");
     }
 
+    /**
+     * Muestra un cuadro de diálogo emergente con un mensaje de error.
+     * @param mensaje Descripción del error.
+     */
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Muestra un cuadro de diálogo emergente indicando que la operación fue exitosa.
+     * @param mensaje Mensaje de éxito.
+     */
     public void mostrarExito(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Exito", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // ── GETTERS ──
+    // ── GETTERS QUE UTILIZA EL CONTROLADOR ──
+
     public JTextField getTxtNombre() {
         return txtNombre;
     }
@@ -168,7 +194,9 @@ public class RegistroUsuarioView extends JFrame {
         return btnCancelar;
     }
 
-    // Solo para probar rapido como se ve el formulario
+    /**
+     * Método principal (main): Permite probar y visualizar la ventana de manera independiente.
+     */
     public static void main(String[] args) {
         RegistroUsuarioView vista = new RegistroUsuarioView("Cliente");
         vista.setVisible(true);

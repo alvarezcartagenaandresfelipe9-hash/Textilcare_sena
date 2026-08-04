@@ -19,19 +19,31 @@ import java.awt.Cursor;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Vista de registro de prendas (RegistrarPrendaView) para TextilCare.
+ * Proporciona un formulario emergente con campos para seleccionar el tipo de prenda,
+ * cliente asociado, técnico encargado, fecha de ingreso y descripción detallada.
+ */
 public class RegistrarPrendaView extends JFrame {
 
+    // Componentes de selección y entrada de datos
     private JComboBox<String> cmbTipo;
     private JComboBox<String> cmbCliente;
     private JComboBox<String> cmbTecnico;
     private JComboBox<String> cmbDia, cmbMes, cmbAnio;
     private JTextArea txtDescripcion;
+    
+    // Botones de acción del formulario
     private JButton btnGuardar;
     private JButton btnCancelar;
 
-    private final Color cafe = new Color(181, 137, 103);
-    private final Color marronOscuro = new Color(90, 58, 35);
+    // Paleta de colores institucional para mantener la coherencia visual
+    private final Color morado = new Color(155, 89, 182);         // Color de acento
+    private final Color moradoOscuro = new Color(88, 24, 130);     // Color principal para títulos y elementos destacados
 
+    /**
+     * Constructor principal: Inicializa la ventana de registro de prendas con un diseño de posicionamiento absoluto.
+     */
     public RegistrarPrendaView() {
         setTitle("Registrar Prenda - TextilCare");
         setSize(500, 700);
@@ -40,14 +52,14 @@ public class RegistrarPrendaView extends JFrame {
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
 
-        // TITULO
+        // ── TÍTULO DE LA VENTANA ──
         JLabel titulo = new JLabel("Registrar Prenda", SwingConstants.CENTER);
         titulo.setBounds(150, 20, 200, 30);
         titulo.setFont(new Font("Arial", Font.BOLD, 20));
-        titulo.setForeground(marronOscuro);
+        titulo.setForeground(moradoOscuro);
         add(titulo);
 
-        // LOGO
+        // ── LOGOTIPO INSTITUCIONAL ──
         JLabel lblLogo = new JLabel();
         lblLogo.setBounds(190, 60, 100, 100);
         lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -59,7 +71,7 @@ public class RegistrarPrendaView extends JFrame {
         }
         add(lblLogo);
 
-        // TIPO DE PRENDA
+        // ── TIPO DE PRENDA ──
         JLabel lblTipo = new JLabel("Tipo de prenda:");
         lblTipo.setBounds(40, 180, 150, 25);
         add(lblTipo);
@@ -78,7 +90,7 @@ public class RegistrarPrendaView extends JFrame {
         cmbTipo.setBounds(40, 210, 400, 30);
         add(cmbTipo);
 
-        // CLIENTE
+        // ── CLIENTE ──
         JLabel lblCliente = new JLabel("Cliente:");
         lblCliente.setBounds(40, 255, 150, 25);
         add(lblCliente);
@@ -88,7 +100,7 @@ public class RegistrarPrendaView extends JFrame {
         cmbCliente.setBounds(40, 285, 400, 30);
         add(cmbCliente);
 
-        // TECNICO
+        // ── TÉCNICO ──
         JLabel lblTecnico = new JLabel("Tecnico:");
         lblTecnico.setBounds(40, 330, 150, 25);
         add(lblTecnico);
@@ -98,7 +110,7 @@ public class RegistrarPrendaView extends JFrame {
         cmbTecnico.setBounds(40, 360, 400, 30);
         add(cmbTecnico);
 
-        // FECHA
+        // ── FECHA DE INGRESO ──
         JLabel lblFecha = new JLabel("Fecha de ingreso:");
         lblFecha.setBounds(40, 405, 150, 25);
         add(lblFecha);
@@ -136,7 +148,7 @@ public class RegistrarPrendaView extends JFrame {
         cmbAnio.setBounds(270, 435, 170, 30);
         add(cmbAnio);
 
-        // DESCRIPCION
+        // ── DESCRIPCIÓN ──
         JLabel lblDescripcion = new JLabel("Descripcion:");
         lblDescripcion.setBounds(40, 480, 150, 25);
         add(lblDescripcion);
@@ -147,19 +159,19 @@ public class RegistrarPrendaView extends JFrame {
 
         JScrollPane scroll = new JScrollPane(txtDescripcion);
         scroll.setBounds(40, 510, 400, 80);
-        scroll.setBorder(BorderFactory.createLineBorder(new Color(200, 190, 180)));
+        scroll.setBorder(BorderFactory.createLineBorder(new Color(215, 205, 235)));
         add(scroll);
 
-        // BOTON GUARDAR
+        // ── BOTÓN GUARDAR ──
         btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(80, 615, 120, 35);
-        btnGuardar.setBackground(cafe);
+        btnGuardar.setBackground(morado);
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.setFocusPainted(false);
         btnGuardar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(btnGuardar);
 
-        // BOTON CANCELAR
+        // ── BOTÓN CANCELAR ──
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBounds(260, 615, 120, 35);
         btnCancelar.setFocusPainted(false);
@@ -167,21 +179,29 @@ public class RegistrarPrendaView extends JFrame {
         add(btnCancelar);
     }
 
-    // Llena el combo de Cliente con nombres reales
+    /**
+     * Llena el ComboBox de clientes con los nombres reales obtenidos de la base de datos.
+     * @param nombres Lista con los nombres de los clientes.
+     */
     public void cargarClientes(List<String> nombres) {
         for (String nombre : nombres) {
             cmbCliente.addItem(nombre);
         }
     }
 
-    // Llena el combo de Tecnico con nombres reales
+    /**
+     * Llena el ComboBox de técnicos con los nombres reales obtenidos de la base de datos.
+     * @param nombres Lista con los nombres de los técnicos.
+     */
     public void cargarTecnicos(List<String> nombres) {
         for (String nombre : nombres) {
             cmbTecnico.addItem(nombre);
         }
     }
 
-    // Limpia el formulario despues de guardar
+    /**
+     * Restablece todos los campos del formulario a su estado predeterminado después de guardar.
+     */
     public void limpiarFormulario() {
         cmbTipo.setSelectedIndex(0);
         cmbCliente.setSelectedIndex(0);
@@ -192,15 +212,24 @@ public class RegistrarPrendaView extends JFrame {
         txtDescripcion.setText("");
     }
 
+    /**
+     * Muestra un cuadro de diálogo emergente con un mensaje de error.
+     * @param mensaje Mensaje descriptivo del error.
+     */
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Muestra un cuadro de diálogo emergente indicando que la operación fue exitosa.
+     * @param mensaje Mensaje de éxito.
+     */
     public void mostrarExito(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Exito", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // ── GETTERS que usa el Controlador ──
+    // ── GETTERS QUE UTILIZA EL CONTROLADOR ──
+
     public JComboBox<String> getCmbTipo() {
         return cmbTipo;
     }
@@ -237,6 +266,9 @@ public class RegistrarPrendaView extends JFrame {
         return btnCancelar;
     }
 
+    /**
+     * Método principal (main): Permite probar y visualizar la ventana de manera independiente.
+     */
     public static void main(String[] args) {
         RegistrarPrendaView vista = new RegistrarPrendaView();
         vista.setVisible(true);

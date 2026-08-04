@@ -1,5 +1,6 @@
 package textilecare.view;
 
+// Importaciones de Swing para la construcción de componentes gráficos e interfaces de usuario
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
@@ -19,14 +20,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 
-// Importaciones para el manejo de archivos, lectura de imágenes 
+// Importaciones para el manejo de archivos, lectura de imágenes y conversión a bytes
 import java.io.File;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 
+/**
+ * Vista del formulario para actualizar el estado, fechas, fotografías y materiales de una reparación (FormularioReparacionView).
+ */
 public class FormularioReparacionView extends JFrame {
 
+    // Componentes interactivos y selectores de la interfaz
     private JComboBox<String> cmbEstado;
     private JComboBox<String> cmbDiaInicio, cmbMesInicio, cmbAnioInicio;
     private JComboBox<String> cmbDiaFin, cmbMesFin, cmbAnioFin;
@@ -35,28 +40,33 @@ public class FormularioReparacionView extends JFrame {
     private JTable tablaMateriales;
     private DefaultTableModel modeloMateriales;
 
+    // Etiquetas de vista previa y arreglos de bytes para almacenar las fotografías de la reparación
     private JLabel lblPreview1, lblPreview2, lblPreview3;
     private byte[] foto1, foto2, foto3;
 
+    // Botones de control y acción
     private JButton btnAgregarMaterial;
     private JButton btnEliminarMaterial;
     private JButton btnGuardar;
     private JButton btnCancelar;
 
-    // Paleta de colores institucional y arreglo de meses para la gestión de fechas
-    private final Color cafe = new Color(181, 137, 103);
-    private final Color fondo = new Color(238, 232, 224);
+    // Paleta de colores institucional (morada) y arreglo de meses para la gestión de fechas
+    private final Color morado = new Color(155, 89, 182);         // Color de acento institucional
+    private final Color fondoLila = new Color(243, 237, 250);     // Color de fondo general de la ventana (lila claro)
     private final String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
-    // Constructor: Inicializa la ventana de actualización de reparación, sus dimensiones, colores y módulos visuales
+    /**
+     * Constructor principal: Inicializa la ventana de actualización de reparación, sus dimensiones, colores y módulos visuales.
+     * @param tipoPrenda Tipo de prenda que se va a actualizar (ej. "Camisa", "Pantalón").
+     */
     public FormularioReparacionView(String tipoPrenda) {
         setTitle("Actualizar prenda - " + tipoPrenda);
         setSize(620, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(fondo);
+        getContentPane().setBackground(fondoLila);
 
         construirEncabezado(tipoPrenda);
         construirEstado();
@@ -66,16 +76,21 @@ public class FormularioReparacionView extends JFrame {
         construirBotonesFinales();
     }
 
-    // Configura y posiciona el título principal de la ventana con el tipo de prenda a actualizar
+    /**
+     * Configura y posiciona el título principal de la ventana con el tipo de prenda a actualizar.
+     * @param tipoPrenda Nombre de la prenda.
+     */
     private void construirEncabezado(String tipoPrenda) {
         JLabel titulo = new JLabel("Actualizar: " + tipoPrenda);
         titulo.setFont(new Font("Serif", Font.BOLD, 18));
-        titulo.setForeground(new Color(100, 70, 40));
+        titulo.setForeground(new Color(88, 24, 130)); // Morado oscuro institucional
         titulo.setBounds(20, 15, 400, 30);
         add(titulo);
     }
 
-    // Construye el selector desplegable para modificar el estado del proceso de la prenda
+    /**
+     * Construye el selector desplegable para modificar el estado del proceso de la prenda.
+     */
     private void construirEstado() {
         JLabel lblEstado = new JLabel("Estado:");
         lblEstado.setBounds(20, 55, 150, 25);
@@ -90,7 +105,9 @@ public class FormularioReparacionView extends JFrame {
         add(cmbEstado);
     }
 
-    // Construye los selectores de fecha de inicio y de fecha de fin (días, meses y años)
+    /**
+     * Construye los selectores de fecha de inicio y de fecha de fin (días, meses y años).
+     */
     private void construirFechas() {
         JLabel lblFechaInicio = new JLabel("Fecha de inicio:");
         lblFechaInicio.setBounds(20, 120, 150, 25);
@@ -125,7 +142,10 @@ public class FormularioReparacionView extends JFrame {
         add(cmbAnioFin);
     }
 
-    // Método auxiliar para rellenar un ComboBox con los días del 1 al 31
+    /**
+     * Método auxiliar para rellenar un ComboBox con los días del 1 al 31.
+     * @return JComboBox configurado con los días.
+     */
     private JComboBox<String> crearComboDias() {
         JComboBox<String> combo = new JComboBox<>();
         combo.addItem("Dia");
@@ -135,7 +155,10 @@ public class FormularioReparacionView extends JFrame {
         return combo;
     }
 
-    // Método auxiliar para rellenar un ComboBox con los meses del año
+    /**
+     * Método auxiliar para rellenar un ComboBox con los meses del año.
+     * @return JComboBox configurado con los meses.
+     */
     private JComboBox<String> crearComboMeses() {
         JComboBox<String> combo = new JComboBox<>();
         combo.addItem("Mes");
@@ -145,7 +168,10 @@ public class FormularioReparacionView extends JFrame {
         return combo;
     }
 
-    // Método auxiliar para rellenar un ComboBox con un rango de años habilitados
+    /**
+     * Método auxiliar para rellenar un ComboBox con un rango de años habilitados.
+     * @return JComboBox configurado con los años.
+     */
     private JComboBox<String> crearComboAnios() {
         JComboBox<String> combo = new JComboBox<>();
         combo.addItem("Año");
@@ -155,7 +181,9 @@ public class FormularioReparacionView extends JFrame {
         return combo;
     }
 
-    // Construye las secciones de vista previa y botones para cargar hasta 3 fotografías de la reparación
+    /**
+     * Construye las secciones de vista previa y botones para cargar hasta 3 fotografías de la reparación.
+     */
     private void construirFotos() {
         JLabel lblFotos = new JLabel("Fotos:");
         lblFotos.setFont(new Font("Serif", Font.BOLD, 14));
@@ -183,29 +211,44 @@ public class FormularioReparacionView extends JFrame {
         add(lblNota);
     }
 
-    // Crea un componente etiqueta estilizado para mostrar la vista previa de una imagen cargada
+    /**
+     * Crea un componente etiqueta estilizado para mostrar la vista previa de una imagen cargada.
+     * @param x Coordenada horizontal de ubicación.
+     * @return JLabel configurado como contenedor de imagen.
+     */
     private JLabel crearPreviewFoto(int x) {
         JLabel lbl = new JLabel("Sin foto");
         lbl.setBounds(x, 285, 110, 110);
-        lbl.setBorder(new LineBorder(new Color(200, 190, 180)));
+        lbl.setBorder(new LineBorder(new Color(215, 205, 235)));
         lbl.setHorizontalAlignment(SwingConstants.CENTER);
         lbl.setBackground(Color.WHITE);
         lbl.setOpaque(true);
         return lbl;
     }
 
-    // Crea un botón vinculado a una ranura de fotografía específica para disparar el selector de archivos
+    /**
+     * Crea un botón vinculado a una ranura de fotografía específica para disparar el selector de archivos.
+     * @param texto Texto del botón.
+     * @param x Coordenada horizontal.
+     * @param preview Etiqueta de vista previa asociada.
+     * @param numeroFoto Número identificador de la foto (1, 2 o 3).
+     * @return JButton configurado.
+     */
     private JButton crearBotonFoto(String texto, int x, JLabel preview, int numeroFoto) {
         JButton btn = new JButton(texto);
         btn.setBounds(x, 400, 110, 28);
-        btn.setBackground(cafe);
+        btn.setBackground(morado);
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.addActionListener(e -> seleccionarFoto(preview, numeroFoto));
         return btn;
     }
 
-    // Abre el selector de archivos, renderiza la vista previa de la imagen y almacena su representación en bytes
+    /**
+     * Abre el selector de archivos, renderiza la vista previa de la imagen y almacena su representación en bytes.
+     * @param preview Etiqueta donde se mostrará la miniatura.
+     * @param numeroFoto Número de la foto que se está cargando.
+     */
     private void seleccionarFoto(JLabel preview, int numeroFoto) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Seleccionar foto");
@@ -241,7 +284,9 @@ public class FormularioReparacionView extends JFrame {
         }
     }
 
-    // Construye la sección de gestión de materiales usados (producto, cantidad, tabla y botones de control)
+    /**
+     * Construye la sección de gestión de materiales usados (producto, cantidad, tabla y botones de control).
+     */
     private void construirMateriales() {
         JLabel lblMateriales = new JLabel("Materiales usados (solo si esta Reparada):");
         lblMateriales.setFont(new Font("Serif", Font.BOLD, 13));
@@ -258,7 +303,7 @@ public class FormularioReparacionView extends JFrame {
 
         btnAgregarMaterial = new JButton("+ Agregar");
         btnAgregarMaterial.setBounds(400, 490, 130, 30);
-        btnAgregarMaterial.setBackground(cafe);
+        btnAgregarMaterial.setBackground(morado);
         btnAgregarMaterial.setForeground(Color.WHITE);
         btnAgregarMaterial.setFocusPainted(false);
         add(btnAgregarMaterial);
@@ -266,7 +311,7 @@ public class FormularioReparacionView extends JFrame {
         modeloMateriales = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
-                return false;
+                return false; // Celdas no editables directamente
             }
         };
         modeloMateriales.addColumn("Producto");
@@ -275,28 +320,30 @@ public class FormularioReparacionView extends JFrame {
         tablaMateriales = new JTable(modeloMateriales);
         tablaMateriales.setRowHeight(28);
         tablaMateriales.setFont(new Font("Serif", Font.PLAIN, 12));
-        tablaMateriales.getTableHeader().setBackground(cafe);
+        tablaMateriales.getTableHeader().setBackground(morado);
         tablaMateriales.getTableHeader().setForeground(Color.WHITE);
         tablaMateriales.getTableHeader().setFont(new Font("Serif", Font.BOLD, 12));
 
         JScrollPane scroll = new JScrollPane(tablaMateriales);
         scroll.setBounds(20, 530, 560, 100);
-        scroll.setBorder(new LineBorder(new Color(200, 190, 180), 1));
+        scroll.setBorder(new LineBorder(new Color(215, 205, 235), 1));
         add(scroll);
 
         btnEliminarMaterial = new JButton("Eliminar seleccionado");
         btnEliminarMaterial.setBounds(20, 638, 190, 28);
-        btnEliminarMaterial.setBackground(new Color(200, 80, 80));
+        btnEliminarMaterial.setBackground(new Color(200, 80, 80)); // Rojo suave para acción de eliminar
         btnEliminarMaterial.setForeground(Color.WHITE);
         btnEliminarMaterial.setFocusPainted(false);
         add(btnEliminarMaterial);
     }
 
-    // Construye los botones de acción final ("Guardar" y "Cancelar")
+    /**
+     * Construye los botones de acción final ("Guardar" y "Cancelar").
+     */
     private void construirBotonesFinales() {
         btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(330, 675, 120, 35);
-        btnGuardar.setBackground(cafe);
+        btnGuardar.setBackground(morado);
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.setFocusPainted(false);
         add(btnGuardar);
@@ -307,12 +354,33 @@ public class FormularioReparacionView extends JFrame {
         add(btnCancelar);
     }
 
-    // Agrega una fila con los datos de un material a la tabla (utilizado por el Controlador)
+    /**
+     * Agrega una fila con los datos de un material a la tabla (utilizado por el Controlador).
+     * @param producto Nombre o descripción del material.
+     * @param cantidad Cantidad utilizada.
+     */
     public void agregarFilaMaterial(String producto, String cantidad) {
         modeloMateriales.addRow(new Object[]{producto, cantidad});
     }
 
-    // ── GETTERS que usa el Controlador ──
+    /**
+     * Despliega un cuadro de diálogo emergente para reportar un error.
+     * @param mensaje Mensaje descriptivo del error.
+     */
+    public void mostrarError(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Despliega un cuadro de diálogo emergente para confirmar una acción exitosa.
+     * @param mensaje Mensaje de éxito.
+     */
+    public void mostrarExito(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Exito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // ── GETTERS PARA CONTROLADORES Y EVENTOS ──
+
     public JComboBox<String> getCmbEstado() {
         return cmbEstado;
     }
@@ -385,17 +453,9 @@ public class FormularioReparacionView extends JFrame {
         return btnCancelar;
     }
 
-    // Despliega un cuadro de diálogo emergente para reportar un error
-    public void mostrarError(String mensaje) {
-        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
-
-    // Despliega un cuadro de diálogo emergente para confirmar una acción exitosa
-    public void mostrarExito(String mensaje) {
-        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Exito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    // Método principal para visualizar rápidamente la interfaz del formulario de reparación de forma independiente
+    /**
+     * Método principal (main): Permite probar y ejecutar esta ventana de manera independiente.
+     */
     public static void main(String[] args) {
         FormularioReparacionView vista = new FormularioReparacionView("Camisa");
         vista.setVisible(true);

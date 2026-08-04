@@ -31,8 +31,8 @@ public class RegistrarVentaView extends JDialog {
     private DefaultTableModel modeloTabla;
     private JLabel lblTotal;
 
-    private final Color cafe = new Color(181, 137, 103);
-    private final Color marronOscuro = new Color(90, 58, 35);
+    private final Color morado = new Color(155, 89, 182);
+    private final Color moradoOscuro = new Color(88, 24, 130);
     private final Color verde = new Color(50, 160, 60);
 
     public RegistrarVentaView(JFrame padre) {
@@ -52,7 +52,7 @@ public class RegistrarVentaView extends JDialog {
     private void construirTitulo() {
         JLabel titulo = new JLabel("Registrar Venta", SwingConstants.CENTER);
         titulo.setOpaque(true);
-        titulo.setBackground(cafe);
+        titulo.setBackground(morado);
         titulo.setForeground(Color.WHITE);
         titulo.setFont(new Font("Arial", Font.BOLD, 18));
         titulo.setBounds(0, 0, 650, 45);
@@ -77,7 +77,7 @@ public class RegistrarVentaView extends JDialog {
         add(txtCantidad);
 
         btnAgregar = new JButton("+ Agregar");
-        btnAgregar.setBackground(cafe);
+        btnAgregar.setBackground(morado);
         btnAgregar.setForeground(Color.WHITE);
         btnAgregar.setFocusPainted(false);
         btnAgregar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -107,13 +107,13 @@ public class RegistrarVentaView extends JDialog {
         tabla.setRowHeight(30);
         tabla.setFont(new Font("Arial", Font.PLAIN, 13));
 
-        tabla.getTableHeader().setBackground(marronOscuro);
+        tabla.getTableHeader().setBackground(moradoOscuro);
         tabla.getTableHeader().setForeground(Color.WHITE);
         tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
 
         JScrollPane scroll = new JScrollPane(tabla);
         scroll.setBounds(20, 175, 610, 240);
-        scroll.setBorder(BorderFactory.createLineBorder(new Color(200, 190, 180)));
+        scroll.setBorder(BorderFactory.createLineBorder(new Color(215, 205, 235)));
         add(scroll);
     }
 
@@ -125,7 +125,7 @@ public class RegistrarVentaView extends JDialog {
 
         lblTotal = new JLabel("$0");
         lblTotal.setFont(new Font("Arial", Font.BOLD, 16));
-        lblTotal.setForeground(marronOscuro);
+        lblTotal.setForeground(moradoOscuro);
         lblTotal.setBounds(465, 425, 165, 30);
         add(lblTotal);
 
@@ -198,5 +198,21 @@ public class RegistrarVentaView extends JDialog {
 
     public JButton getBtnCancelar() {
         return btnCancelar;
+    }
+
+    /**
+     * Metodo principal para probar esta vista de forma independiente.
+     * Como es un JDialog, necesita una ventana "padre" (aunque sea invisible) para poder mostrarse.
+     */
+    public static void main(String[] args) {
+        JFrame ventanaBase = new JFrame();
+        ventanaBase.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        RegistrarVentaView vista = new RegistrarVentaView(ventanaBase);
+        vista.cargarProductos(List.of("Hilo negro", "Boton plastico", "Cierre metalico"));
+        vista.agregarFilaItem("Hilo negro", 2, 2000, 4000);
+        vista.setTotal(4000);
+
+        vista.setVisible(true);
     }
 }

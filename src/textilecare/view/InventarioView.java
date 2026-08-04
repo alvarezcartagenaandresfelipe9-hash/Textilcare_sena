@@ -1,5 +1,6 @@
 package textilecare.view;
 
+// Importaciones de Swing para la construcción de componentes gráficos e interfaces de usuario
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -15,6 +16,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+// Importaciones de AWT para la gestión de contenedores, diseño, fuentes, colores e imágenes
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -28,8 +30,13 @@ import java.awt.Cursor;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Vista principal de gestión del inventario (InventarioView) para TextilCare.
+ * Permite registrar nuevos productos, ingresar existencias a productos actuales y visualizar la tabla de stock con alertas por colores.
+ */
 public class InventarioView extends JFrame {
 
+    // Componentes del formulario de registro de nuevos productos
     private JTextField txtNombre;
     private JComboBox<String> cmbCategoria;
     private JTextField txtCantidad;
@@ -38,38 +45,52 @@ public class InventarioView extends JFrame {
     private JTextField txtPrecio;
     private JButton btnGuardarProducto;
 
+    // Componentes del formulario de ingreso de stock a productos existentes
     private JComboBox<String> cmbProductoExistente;
     private JTextField txtCantidadIngreso;
     private JButton btnIngresarCantidad;
 
+    // Componentes de la tabla de inventario
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
+    // Botones de navegación de la barra lateral
     private JButton btnPrendas, btnTecnicos, btnProveedores;
 
-    private final Color cafe = new Color(181, 137, 103);
-    private final Color marronOscuro = new Color(90, 58, 35);
-    private final Color fondo = new Color(238, 232, 224);
+    // Paleta de colores institucional para mantener coherencia visual
+    private final Color morado = new Color(155, 89, 182);         // Color de acento institucional
+    private final Color moradoOscuro = new Color(88, 24, 130);     // Color principal para barra lateral y encabezados
+    private final Color fondoLila = new Color(243, 237, 250);     // Color de fondo general de la ventana (lila claro)
 
+    /**
+     * Constructor principal: Inicializa la ventana de inventario, su diseño general, barra lateral y contenido central.
+     * @param nombreSupervisor Nombre del supervisor autenticado que aparece en el saludo del menú.
+     */
     public InventarioView(String nombreSupervisor) {
         setTitle("TextilCare - Inventario");
         setSize(1100, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-        getContentPane().setBackground(fondo);
+        getContentPane().setBackground(fondoLila);
 
         add(crearBarraLateral(nombreSupervisor), BorderLayout.WEST);
         add(crearContenido(), BorderLayout.CENTER);
     }
 
+    /**
+     * Construye y configura el panel de la barra lateral izquierda (menú de navegación y perfil).
+     * @param nombreSupervisor Nombre del supervisor.
+     * @return JPanel configurado con la barra lateral.
+     */
     private JPanel crearBarraLateral(String nombreSupervisor) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(marronOscuro);
+        panel.setBackground(moradoOscuro);
         panel.setPreferredSize(new Dimension(220, 0));
         panel.setBorder(BorderFactory.createEmptyBorder(35, 20, 25, 20));
 
+        // ── LOGOTIPO INSTITUCIONAL ──
         JLabel lblLogo = new JLabel();
         lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
         lblLogo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -83,6 +104,7 @@ public class InventarioView extends JFrame {
 
         panel.add(Box.createRigidArea(new Dimension(0, 18)));
 
+        // ── ETIQUETAS DE USUARIO Y ROL ──
         JLabel lblSaludo = new JLabel(nombreSupervisor, SwingConstants.CENTER);
         lblSaludo.setFont(new Font("Georgia", Font.BOLD, 17));
         lblSaludo.setForeground(Color.WHITE);
@@ -91,14 +113,15 @@ public class InventarioView extends JFrame {
 
         JLabel lblRol = new JLabel("Supervisor", SwingConstants.CENTER);
         lblRol.setFont(new Font("Arial", Font.PLAIN, 12));
-        lblRol.setForeground(new Color(230, 210, 195));
+        lblRol.setForeground(new Color(225, 205, 240));
         lblRol.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panel.add(lblRol);
 
         panel.add(Box.createRigidArea(new Dimension(0, 25)));
 
+        // ── BOTONES DEL MENÚ DE NAVEGACIÓN ──
         btnPrendas = crearBotonMenu("Prendas", false);
-        JButton btnInventario = crearBotonMenu("Inventario", true);
+        JButton btnInventario = crearBotonMenu("Inventario", true); // Sección actual activa
         btnTecnicos = crearBotonMenu("Tecnicos", false);
         btnProveedores = crearBotonMenu("Proveedores", false);
 
@@ -115,6 +138,12 @@ public class InventarioView extends JFrame {
         return panel;
     }
 
+    /**
+     * Método auxiliar para crear botones del menú lateral con estilos consistentes según su estado activo.
+     * @param texto Texto descriptivo del botón.
+     * @param activo Indica si corresponde a la vista actual.
+     * @return JButton configurado.
+     */
     private JButton crearBotonMenu(String texto, boolean activo) {
         JButton boton = new JButton(texto);
         boton.setFont(new Font("Arial", Font.BOLD, 13));
@@ -125,23 +154,27 @@ public class InventarioView extends JFrame {
 
         if (activo) {
             boton.setBackground(Color.WHITE);
-            boton.setForeground(marronOscuro);
+            boton.setForeground(moradoOscuro);
         } else {
-            boton.setBackground(cafe);
+            boton.setBackground(morado);
             boton.setForeground(Color.WHITE);
         }
 
         return boton;
     }
 
+    /**
+     * Construye el contenedor principal del área central (formularios superiores y tabla inferior).
+     * @return JPanel con el contenido organizativo de la vista.
+     */
     private JPanel crearContenido() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(fondo);
+        panel.setBackground(fondoLila);
         panel.setBorder(BorderFactory.createEmptyBorder(25, 25, 20, 25));
 
         JPanel panelFormularios = new JPanel();
         panelFormularios.setLayout(new BoxLayout(panelFormularios, BoxLayout.X_AXIS));
-        panelFormularios.setBackground(fondo);
+        panelFormularios.setBackground(fondoLila);
 
         panelFormularios.add(crearFormularioNuevoProducto());
         panelFormularios.add(Box.createRigidArea(new Dimension(15, 0)));
@@ -153,10 +186,14 @@ public class InventarioView extends JFrame {
         return panel;
     }
 
+    /**
+     * Construye la tarjeta de formulario para el registro de nuevos productos en el inventario.
+     * @return JPanel con los campos de texto, combos y diseño de la tarjeta.
+     */
     private JPanel crearFormularioNuevoProducto() {
         JPanel card = new JPanel(null);
         card.setBackground(Color.WHITE);
-        card.setBorder(new LineBorder(new Color(220, 210, 200), 1));
+        card.setBorder(new LineBorder(new Color(222, 212, 238), 1));
         card.setPreferredSize(new Dimension(400, 340));
 
         JLabel titulo = new JLabel("Registrar nuevo producto");
@@ -205,10 +242,14 @@ public class InventarioView extends JFrame {
         return card;
     }
 
+    /**
+     * Construye la tarjeta de formulario para ingresar stock adicional a un producto ya existente.
+     * @return JPanel con los selectores y botones de acción rápida.
+     */
     private JPanel crearFormularioIngresoCantidad() {
         JPanel card = new JPanel(null);
         card.setBackground(Color.WHITE);
-        card.setBorder(new LineBorder(new Color(220, 210, 200), 1));
+        card.setBorder(new LineBorder(new Color(222, 212, 238), 1));
         card.setPreferredSize(new Dimension(420, 340));
 
         JLabel titulo = new JLabel("Ingresar cantidad a producto existente");
@@ -229,16 +270,16 @@ public class InventarioView extends JFrame {
         btnIngresarCantidad = new JButton("Ingresar al inventario");
         btnIngresarCantidad.setBounds(15, 175, 390, 32);
         btnIngresarCantidad.setBackground(Color.WHITE);
-        btnIngresarCantidad.setForeground(cafe);
+        btnIngresarCantidad.setForeground(morado);
         btnIngresarCantidad.setFont(new Font("Arial", Font.BOLD, 12));
         btnIngresarCantidad.setFocusPainted(false);
-        btnIngresarCantidad.setBorder(new LineBorder(cafe, 1));
+        btnIngresarCantidad.setBorder(new LineBorder(morado, 1));
         btnIngresarCantidad.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         card.add(btnIngresarCantidad);
 
         btnGuardarProducto = new JButton("Guardar producto");
         btnGuardarProducto.setBounds(15, 260, 390, 32);
-        btnGuardarProducto.setBackground(cafe);
+        btnGuardarProducto.setBackground(morado);
         btnGuardarProducto.setForeground(Color.WHITE);
         btnGuardarProducto.setFont(new Font("Arial", Font.BOLD, 12));
         btnGuardarProducto.setFocusPainted(false);
@@ -248,6 +289,13 @@ public class InventarioView extends JFrame {
         return card;
     }
 
+    /**
+     * Método auxiliar para generar etiquetas de texto uniformes dentro de los formularios.
+     * @param texto Texto de la etiqueta.
+     * @param x Coordenada X.
+     * @param y Coordenada Y.
+     * @return JLabel configurado.
+     */
     private JLabel crearEtiqueta(String texto, int x, int y) {
         JLabel lbl = new JLabel(texto);
         lbl.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -255,48 +303,73 @@ public class InventarioView extends JFrame {
         return lbl;
     }
 
+    /**
+     * Construye la tabla de inventario y su contenedor scroll con renderizado de colores para el estado del stock.
+     * @return JScrollPane que envuelve la JTable.
+     */
     private JScrollPane crearTabla() {
         String[] columnas = {"Producto", "Categoria", "Stock", "Unidad", "Proveedor", "Precio unit.", "Estado"};
 
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int fila, int columna) {
-                return false;
+                return false; // Celdas no editables directamente
             }
         };
 
         tabla = new JTable(modeloTabla);
         tabla.setRowHeight(32);
         tabla.setFont(new Font("Arial", Font.PLAIN, 13));
-        tabla.setGridColor(new Color(225, 218, 210));
+        tabla.setGridColor(new Color(228, 218, 238));
 
-        tabla.getTableHeader().setBackground(marronOscuro);
+        tabla.getTableHeader().setBackground(moradoOscuro);
         tabla.getTableHeader().setForeground(Color.WHITE);
         tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
         tabla.getTableHeader().setPreferredSize(new Dimension(0, 36));
 
+        // Asigna el renderizador personalizado para dar color a la columna de Estado
         tabla.getColumnModel().getColumn(6).setCellRenderer(new EstadoStockCellRenderer());
 
         JScrollPane scroll = new JScrollPane(tabla);
-        scroll.setBorder(BorderFactory.createLineBorder(new Color(225, 218, 210), 1));
+        scroll.setBorder(BorderFactory.createLineBorder(new Color(228, 218, 238), 1));
         scroll.setPreferredSize(new Dimension(0, 250));
 
         return scroll;
     }
 
-    // Llena la tabla con la lista de productos
+    /**
+     * Método de compatibilidad para la lista de productos (no utilizado directamente, reemplazado por agregarFilaProducto).
+     * @param filas Lista de cadenas.
+     */
     public void mostrarProductos(List<String> filas) {
-        // no se usa, se reemplaza por agregarFila (ver mas abajo)
+        // No se usa, se reemplaza por agregarFilaProducto
     }
 
+    /**
+     * Agrega una fila con los datos de un producto a la tabla de inventario.
+     * @param nombre Nombre del producto.
+     * @param categoria Categoría del insumo.
+     * @param stock Cantidad actual en inventario.
+     * @param unidad Unidad de medida.
+     * @param proveedor Proveedor asociado.
+     * @param precio Precio unitario.
+     * @param estado Estado del stock ("Disponible", "Stock bajo", etc.).
+     */
     public void agregarFilaProducto(String nombre, String categoria, int stock, String unidad, String proveedor, int precio, String estado) {
         modeloTabla.addRow(new Object[]{nombre, categoria, stock, unidad, proveedor, "$" + precio, estado});
     }
 
+    /**
+     * Limpia todas las filas de la tabla de inventario.
+     */
     public void limpiarTabla() {
         modeloTabla.setRowCount(0);
     }
 
+    /**
+     * Carga el listado de proveedores en el ComboBox correspondiente.
+     * @param nombres Lista con los nombres de los proveedores.
+     */
     public void cargarProveedores(List<String> nombres) {
         cmbProveedor.removeAllItems();
         for (String nombre : nombres) {
@@ -304,6 +377,10 @@ public class InventarioView extends JFrame {
         }
     }
 
+    /**
+     * Carga el listado de productos existentes en el ComboBox de ingresos.
+     * @param nombres Lista con los nombres de los productos.
+     */
     public void cargarProductosExistentes(List<String> nombres) {
         cmbProductoExistente.removeAllItems();
         for (String nombre : nombres) {
@@ -311,6 +388,9 @@ public class InventarioView extends JFrame {
         }
     }
 
+    /**
+     * Restablece los campos del formulario de registro de nuevos productos.
+     */
     public void limpiarFormularioNuevoProducto() {
         txtNombre.setText("");
         txtCantidad.setText("");
@@ -322,15 +402,24 @@ public class InventarioView extends JFrame {
         }
     }
 
+    /**
+     * Despliega un cuadro de diálogo emergente para reportar un error.
+     * @param mensaje Mensaje descriptivo del error.
+     */
     public void mostrarError(String mensaje) {
         javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Despliega un cuadro de diálogo emergente para confirmar una acción exitosa.
+     * @param mensaje Mensaje de éxito.
+     */
     public void mostrarExito(String mensaje) {
         javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Exito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // ── GETTERS que usa el Controlador ──
+    // ── GETTERS PARA CONTROLADORES Y EVENTOS ──
+
     public JTextField getTxtNombre() {
         return txtNombre;
     }
@@ -383,7 +472,9 @@ public class InventarioView extends JFrame {
         return btnProveedores;
     }
 
-    // Solo para ver rapido como se ve la ventana
+    /**
+     * Método principal (main): Permite probar y ejecutar esta ventana de manera independiente.
+     */
     public static void main(String[] args) {
         InventarioView vista = new InventarioView("Alejandro");
         vista.agregarFilaProducto("Hilo negro", "Hilos", 50, "Unidades", "Textiles del Valle", 2000, "Disponible");
@@ -391,7 +482,9 @@ public class InventarioView extends JFrame {
     }
 }
 
-// Le da color a la celda de Estado segun el nivel de stock
+/**
+ * Renderizador de celdas personalizado para otorgar colores distintivos a la columna de Estado según el nivel de stock.
+ */
 class EstadoStockCellRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable tabla, Object valor,
@@ -403,15 +496,15 @@ class EstadoStockCellRenderer extends DefaultTableCellRenderer {
 
         switch (valor.toString()) {
             case "Disponible":
-                etiqueta.setBackground(new Color(200, 240, 220));
+                etiqueta.setBackground(new Color(200, 240, 220)); // Verde suave
                 etiqueta.setForeground(new Color(15, 110, 86));
                 break;
             case "Stock bajo":
-                etiqueta.setBackground(new Color(255, 235, 190));
+                etiqueta.setBackground(new Color(255, 235, 190)); // Amarillo / Naranja pastel
                 etiqueta.setForeground(new Color(133, 79, 11));
                 break;
             default:
-                etiqueta.setBackground(new Color(250, 220, 220));
+                etiqueta.setBackground(new Color(250, 220, 220)); // Rojo suave para crítico o agotado
                 etiqueta.setForeground(new Color(160, 40, 40));
         }
 
