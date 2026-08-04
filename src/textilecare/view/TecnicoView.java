@@ -27,19 +27,31 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Vista del técnico (TecnicoView) para TextilCare.
+ * Proporciona el panel de control exclusivo para el rol de técnico, mostrando una barra lateral
+ * institucional y una tabla central con el listado de prendas asignadas para su reparación o revisión.
+ */
 public class TecnicoView extends JFrame {
 
+    // Componentes principales de la interfaz
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
+    // Listas auxiliares para asociar filas de la tabla con identificadores lógicos
     private List<Integer> idsPrendas = new ArrayList<>();
     private List<String> tiposPrendas = new ArrayList<>();
 
-    // Paleta de colores (misma del resto del proyecto)
-    private final Color marron = new Color(180, 130, 80);
-    private final Color marronOscuro = new Color(90, 58, 35);
-    private final Color fondoBeige = new Color(245, 240, 233);
+    // Paleta de colores institucional compartida en el sistema
+    private final Color morado = new Color(155, 89, 182);         // Color de acento
+    private final Color moradoOscuro = new Color(88, 24, 130);     // Color principal (barra lateral y encabezados)
+    private final Color fondoLila = new Color(243, 237, 250);      // Color de fondo para paneles de contenido
 
+    /**
+     * Constructor principal: Inicializa la ventana del técnico configurando
+     * el diseño general, la barra lateral y el panel central de contenido.
+     * @param nombreTecnico Nombre del técnico autenticado que se mostrará en el saludo.
+     */
     public TecnicoView(String nombreTecnico) {
         setTitle("TextilCare - Tecnico");
         setSize(1100, 650);
@@ -51,11 +63,16 @@ public class TecnicoView extends JFrame {
         add(crearContenido(), BorderLayout.CENTER);
     }
 
-    // Barra lateral con logo, nombre y menu
+    /**
+     * Construye la barra lateral de navegación con el logotipo institucional, el saludo, el rol
+     * y el indicador de sección activa.
+     * @param nombreTecnico Nombre del técnico.
+     * @return Panel lateral configurado.
+     */
     private JPanel crearBarraLateral(String nombreTecnico) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(marronOscuro);
+        panel.setBackground(moradoOscuro);
         panel.setPreferredSize(new Dimension(220, 0));
         panel.setBorder(BorderFactory.createEmptyBorder(35, 20, 25, 20));
 
@@ -73,7 +90,7 @@ public class TecnicoView extends JFrame {
 
         JLabel lblRol = new JLabel("Tecnico", SwingConstants.CENTER);
         lblRol.setFont(new Font("Arial", Font.PLAIN, 12));
-        lblRol.setForeground(new Color(230, 210, 195));
+        lblRol.setForeground(new Color(225, 205, 240));
         lblRol.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panel.add(lblRol);
 
@@ -82,7 +99,7 @@ public class TecnicoView extends JFrame {
         JLabel lblSeccion = new JLabel("  Mis Reparaciones", SwingConstants.LEFT);
         lblSeccion.setOpaque(true);
         lblSeccion.setBackground(Color.WHITE);
-        lblSeccion.setForeground(marronOscuro);
+        lblSeccion.setForeground(moradoOscuro);
         lblSeccion.setFont(new Font("Arial", Font.BOLD, 13));
         lblSeccion.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         lblSeccion.setMaximumSize(new Dimension(190, 38));
@@ -94,7 +111,10 @@ public class TecnicoView extends JFrame {
         return panel;
     }
 
-    // Carga el logo desde el paquete de recursos (mismo que en Login y Cliente)
+    /**
+     * Carga y escala el logotipo institucional para la barra lateral.
+     * @return Etiqueta con el logotipo cargado.
+     */
     private JLabel crearLogo() {
         JLabel lblLogo = new JLabel();
         lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,20 +130,23 @@ public class TecnicoView extends JFrame {
         return lblLogo;
     }
 
-    // Panel principal con titulo, aviso y tabla
+    /**
+     * Construye el panel central que contiene el título, el aviso informativo y la tabla de prendas asignadas.
+     * @return Panel de contenido configurado.
+     */
     private JPanel crearContenido() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(fondoBeige);
+        panel.setBackground(fondoLila);
         panel.setBorder(BorderFactory.createEmptyBorder(30, 35, 25, 35));
 
         JPanel encabezado = new JPanel();
         encabezado.setLayout(new BoxLayout(encabezado, BoxLayout.Y_AXIS));
-        encabezado.setBackground(fondoBeige);
+        encabezado.setBackground(fondoLila);
         encabezado.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
         JLabel lblTitulo = new JLabel("Mis Prendas Asignadas");
         lblTitulo.setFont(new Font("Georgia", Font.BOLD, 24));
-        lblTitulo.setForeground(marronOscuro);
+        lblTitulo.setForeground(moradoOscuro);
         lblTitulo.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 
         JLabel lblAviso = new JLabel("  Solo ves las prendas asignadas a ti. Haz clic en una fila para editarla.");
@@ -145,14 +168,17 @@ public class TecnicoView extends JFrame {
         return panel;
     }
 
-    // Crea la tabla de prendas asignadas
+    /**
+     * Construye la tabla principal de prendas asignadas con su respectivo renderizador de estados.
+     * @return Panel deslizante (JScrollPane) que contiene la tabla.
+     */
     private JScrollPane crearTabla() {
         String[] columnas = {"Prenda", "Cliente", "Fecha", "Estado"};
 
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int fila, int columna) {
-                return false;
+                return false; // Evita la edición directa en las celdas
             }
         };
 
@@ -160,10 +186,10 @@ public class TecnicoView extends JFrame {
         tabla.setRowHeight(36);
         tabla.setFont(new Font("Arial", Font.PLAIN, 14));
         tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tabla.setSelectionBackground(new Color(230, 210, 190));
-        tabla.setGridColor(new Color(225, 218, 210));
+        tabla.setSelectionBackground(new Color(228, 205, 245));
+        tabla.setGridColor(new Color(228, 218, 238));
 
-        tabla.getTableHeader().setBackground(marronOscuro);
+        tabla.getTableHeader().setBackground(moradoOscuro);
         tabla.getTableHeader().setForeground(Color.WHITE);
         tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
         tabla.getTableHeader().setPreferredSize(new Dimension(0, 38));
@@ -171,45 +197,80 @@ public class TecnicoView extends JFrame {
         tabla.getColumnModel().getColumn(3).setCellRenderer(new EstadoCellRenderer());
 
         JScrollPane scroll = new JScrollPane(tabla);
-        scroll.setBorder(BorderFactory.createLineBorder(new Color(225, 218, 210), 1));
+        scroll.setBorder(BorderFactory.createLineBorder(new Color(228, 218, 238), 1));
 
         return scroll;
     }
 
-    // Agrega una fila con los datos de una prenda asignada al tecnico
+    /**
+     * Agrega una nueva fila con los datos de una prenda asignada al técnico y registra sus identificadores.
+     * @param idPrenda Identificador único de la prenda.
+     * @param tipo Tipo de prenda.
+     * @param nombreCliente Nombre del cliente propietario.
+     * @param fecha Fecha de asignación o registro.
+     * @param estado Estado actual del proceso de reparación.
+     */
     public void agregarFila(int idPrenda, String tipo, String nombreCliente, String fecha, String estado) {
         modeloTabla.addRow(new Object[]{tipo, nombreCliente, fecha, estado});
         idsPrendas.add(idPrenda);
         tiposPrendas.add(tipo);
     }
 
-    // Vacia la tabla y las listas de apoyo, para volver a cargar datos frescos
+    /**
+     * Vacía la tabla y las listas de apoyo para volver a cargar datos frescos.
+     */
     public void limpiarTabla() {
         modeloTabla.setRowCount(0);
         idsPrendas.clear();
         tiposPrendas.clear();
     }
 
+    /**
+     * Obtiene el índice de la fila seleccionada en la tabla.
+     * @return Índice de la fila seleccionada, o -1 si no hay ninguna selección.
+     */
     public int getFilaSeleccionada() {
         return tabla.getSelectedRow();
     }
 
+    /**
+     * Obtiene el ID de la prenda asociado a una posición específica.
+     * @param indice Índice de la fila.
+     * @return ID único de la prenda.
+     */
     public int getIdPrenda(int indice) {
         return idsPrendas.get(indice);
     }
 
+    /**
+     * Obtiene el tipo de prenda asociado a una posición específica.
+     * @param indice Índice de la fila.
+     * @return Descripción del tipo de prenda.
+     */
     public String getTipoPrenda(int indice) {
         return tiposPrendas.get(indice);
     }
+
+    // ── GETTERS QUE UTILIZA EL CONTROLADOR ──
 
     public JTable getTabla() {
         return tabla;
     }
 
-   
+    /**
+     * Método principal (main): Permite probar y visualizar la ventana de manera independiente.
+     */
+    public static void main(String[] args) {
+        TecnicoView vista = new TecnicoView("Daniel Ramirez");
+        vista.agregarFila(1, "Camisa", "Carlos Perez", "2026-07-01", "En proceso");
+        vista.setVisible(true);
+    }
 }
 
-// Le da color de fondo a la celda de Estado segun su valor (Pendiente/En proceso/Reparada)
+/**
+ * Renderizador personalizado para la columna de estado en la tabla del técnico,
+ * aplicando colores distintivos según el avance (Reparada, En proceso, etc.).
+ */
 class EstadoCellRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable tabla, Object valor,
@@ -229,8 +290,8 @@ class EstadoCellRenderer extends DefaultTableCellRenderer {
                 etiqueta.setForeground(new Color(133, 79, 11));
                 break;
             default:
-                etiqueta.setBackground(new Color(230, 228, 220));
-                etiqueta.setForeground(new Color(80, 78, 74));
+                etiqueta.setBackground(new Color(230, 225, 238));
+                etiqueta.setForeground(new Color(90, 78, 100));
         }
 
         return etiqueta;

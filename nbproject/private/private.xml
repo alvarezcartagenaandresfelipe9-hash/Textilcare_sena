@@ -3,38 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/SupervisorController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/LoginController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/RegistrarPrendaController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/TecnicoController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/RegistroUsuarioController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/RegistrarProveedorController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/VendedorController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/EstadoPrendaController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/model/FotoPrenda.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecaremain/Main.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/AdministradorController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/model/Usuario.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/RegistrarVentaController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/model/Prenda.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/model/Producto.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/ClienteController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/FormularioReparacionController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/InventarioController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/controller/ProveedorController.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/AdministradorView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/ClienteView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/EstadoPrendaView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/FormularioReparacionView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/InventarioView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/LoginView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/ProveedorView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/RegistrarPrendaView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/RegistrarProveedorView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/RegistrarVentaView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/RegistroUsuarioView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/view/VendedorView.java</file>
-            <file>file:/C:/Users/alvar/OneDrive/Documentos/NetBeansProjects/Textilcare_sena/src/textilecare/model/Venta.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/LoginView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/AdministradorView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/ClienteView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/EstadoPrendaView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/FormularioReparacionView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/InventarioView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/ProveedorView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/RegistrarPrendaView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/RegistrarProveedorView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/RegistrarVentaView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/RegistroUsuarioView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/SupervisorView.java</file>
+            <file>file:/C:/Users/alvar/OneDrive/Desktop/CARTAGO%20-%20MANUEL/src/textilecare/view/TecnicoView.java</file>
         </group>
     </open-files>
 </project-private>

@@ -26,8 +26,14 @@ import java.util.List;
 
 import textilecare.model.Producto;
 
+/**
+ * Vista del vendedor (VendedorView) para TextilCare.
+ * Proporciona la interfaz gráfica principal para el rol de vendedor, integrando la barra lateral
+ * de navegación, buscador de productos, panel interactivo de tarjetas de inventario y opciones de gestión.
+ */
 public class VendedorView extends JFrame {
 
+    // Componentes principales de la interfaz
     private JTextField txtBuscar;
     private JButton btnBuscar;
     private JButton btnRegistrarVenta;
@@ -35,10 +41,16 @@ public class VendedorView extends JFrame {
     private JButton btnSalir;
     private JPanel panelTarjetas;
 
-    private final Color cafe = new Color(181, 137, 103);
-    private final Color marronOscuro = new Color(90, 58, 35);
-    private final Color fondoBeige = new Color(245, 240, 233);
+    // Paleta de colores institucional compartida en el sistema
+    private final Color morado = new Color(155, 89, 182);         // Color de acento
+    private final Color moradoOscuro = new Color(88, 24, 130);     // Color principal (barra lateral y encabezados)
+    private final Color fondoLila = new Color(243, 237, 250);      // Color de fondo para paneles de contenido
 
+    /**
+     * Constructor principal: Inicializa la ventana del vendedor configurando
+     * el diseño general, la barra lateral y el panel central de contenido.
+     * @param nombreVendedor Nombre del vendedor autenticado que se mostrará en el saludo.
+     */
     public VendedorView(String nombreVendedor) {
         setTitle("TextilCare - Vendedor");
         setSize(1000, 620);
@@ -50,11 +62,16 @@ public class VendedorView extends JFrame {
         add(crearContenido(), BorderLayout.CENTER);
     }
 
-    // Barra lateral con logo, saludo y seccion activa
+    /**
+     * Construye la barra lateral de navegación con el logotipo institucional, el saludo, el rol,
+     * el indicador de sección y el botón de salida.
+     * @param nombreVendedor Nombre del vendedor.
+     * @return Panel lateral configurado.
+     */
     private JPanel crearBarraLateral(String nombreVendedor) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(marronOscuro);
+        panel.setBackground(moradoOscuro);
         panel.setPreferredSize(new Dimension(220, 0));
         panel.setBorder(BorderFactory.createEmptyBorder(35, 20, 25, 20));
 
@@ -79,7 +96,7 @@ public class VendedorView extends JFrame {
 
         JLabel lblRol = new JLabel("Vendedor", SwingConstants.CENTER);
         lblRol.setFont(new Font("Arial", Font.PLAIN, 12));
-        lblRol.setForeground(new Color(230, 210, 195));
+        lblRol.setForeground(new Color(225, 205, 240));
         lblRol.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         panel.add(lblRol);
 
@@ -88,7 +105,7 @@ public class VendedorView extends JFrame {
         JLabel lblSeccion = new JLabel("  Productos", SwingConstants.LEFT);
         lblSeccion.setOpaque(true);
         lblSeccion.setBackground(Color.WHITE);
-        lblSeccion.setForeground(marronOscuro);
+        lblSeccion.setForeground(moradoOscuro);
         lblSeccion.setFont(new Font("Arial", Font.BOLD, 13));
         lblSeccion.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         lblSeccion.setMaximumSize(new Dimension(190, 38));
@@ -99,7 +116,7 @@ public class VendedorView extends JFrame {
 
         btnSalir = new JButton("Salir");
         btnSalir.setFont(new Font("Arial", Font.BOLD, 13));
-        btnSalir.setBackground(cafe);
+        btnSalir.setBackground(morado);
         btnSalir.setForeground(Color.WHITE);
         btnSalir.setFocusPainted(false);
         btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -110,10 +127,13 @@ public class VendedorView extends JFrame {
         return panel;
     }
 
-    // Panel principal: titulo, buscador, botones de accion, y las tarjetas de productos
+    /**
+     * Construye el panel central con el encabezado de acciones y el contenedor de tarjetas de productos.
+     * @return Panel de contenido configurado.
+     */
     private JPanel crearContenido() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(fondoBeige);
+        panel.setBackground(fondoLila);
         panel.setBorder(BorderFactory.createEmptyBorder(25, 30, 20, 30));
 
         panel.add(crearEncabezado(), BorderLayout.NORTH);
@@ -122,23 +142,27 @@ public class VendedorView extends JFrame {
         return panel;
     }
 
+    /**
+     * Construye el encabezado del panel central que incluye el título, la barra de búsqueda y los botones de acción.
+     * @return Panel de encabezado configurado.
+     */
     private JPanel crearEncabezado() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(fondoBeige);
+        panel.setBackground(fondoLila);
         panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
         JLabel lblTitulo = new JLabel("Productos");
         lblTitulo.setFont(new Font("Georgia", Font.BOLD, 24));
-        lblTitulo.setForeground(marronOscuro);
+        lblTitulo.setForeground(moradoOscuro);
 
         JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
-        panelBusqueda.setBackground(fondoBeige);
+        panelBusqueda.setBackground(fondoLila);
 
         txtBuscar = new JTextField();
         txtBuscar.setPreferredSize(new Dimension(220, 32));
 
         btnBuscar = new JButton("Buscar");
-        btnBuscar.setBackground(cafe);
+        btnBuscar.setBackground(morado);
         btnBuscar.setForeground(Color.WHITE);
         btnBuscar.setFocusPainted(false);
         btnBuscar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -147,11 +171,11 @@ public class VendedorView extends JFrame {
         panelBusqueda.add(btnBuscar);
 
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 8));
-        panelAcciones.setBackground(fondoBeige);
+        panelAcciones.setBackground(fondoLila);
 
         btnRegistrarVenta = new JButton("+ Registrar Venta");
         btnRegistrarVenta.setFont(new Font("Arial", Font.BOLD, 13));
-        btnRegistrarVenta.setBackground(cafe);
+        btnRegistrarVenta.setBackground(morado);
         btnRegistrarVenta.setForeground(Color.WHITE);
         btnRegistrarVenta.setFocusPainted(false);
         btnRegistrarVenta.setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
@@ -159,7 +183,7 @@ public class VendedorView extends JFrame {
 
         btnReporte = new JButton("Generar Reporte");
         btnReporte.setFont(new Font("Arial", Font.BOLD, 13));
-        btnReporte.setBackground(marronOscuro);
+        btnReporte.setBackground(moradoOscuro);
         btnReporte.setForeground(Color.WHITE);
         btnReporte.setFocusPainted(false);
         btnReporte.setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
@@ -169,7 +193,7 @@ public class VendedorView extends JFrame {
         panelAcciones.add(btnRegistrarVenta);
 
         JPanel filaSuperior = new JPanel(new BorderLayout());
-        filaSuperior.setBackground(fondoBeige);
+        filaSuperior.setBackground(fondoLila);
         filaSuperior.add(lblTitulo, BorderLayout.WEST);
         filaSuperior.add(panelAcciones, BorderLayout.EAST);
 
@@ -179,9 +203,13 @@ public class VendedorView extends JFrame {
         return panel;
     }
 
+    /**
+     * Construye el panel deslizante que albergará las tarjetas de productos.
+     * @return Panel deslizante (JScrollPane) configurado.
+     */
     private JScrollPane crearPanelTarjetas() {
         panelTarjetas = new JPanel(new FlowLayout(FlowLayout.LEFT, 18, 18));
-        panelTarjetas.setBackground(fondoBeige);
+        panelTarjetas.setBackground(fondoLila);
 
         JScrollPane scroll = new JScrollPane(panelTarjetas);
         scroll.setBorder(BorderFactory.createEmptyBorder());
@@ -189,7 +217,10 @@ public class VendedorView extends JFrame {
         return scroll;
     }
 
-    // Vacia y vuelve a pintar las tarjetas de productos
+    /**
+     * Vacía y vuelve a pintar las tarjetas de productos en el panel central a partir de una lista.
+     * @param productos Lista de objetos Producto a mostrar.
+     */
     public void mostrarProductos(List<Producto> productos) {
         panelTarjetas.removeAll();
 
@@ -201,19 +232,27 @@ public class VendedorView extends JFrame {
         panelTarjetas.repaint();
     }
 
+    /**
+     * Crea un componente visual individual (tarjeta) para representar un producto.
+     * @param nombre Nombre del producto.
+     * @param talla Talla disponible.
+     * @param stock Cantidad disponible en inventario.
+     * @param precio Precio unitario.
+     * @return Panel con la tarjeta formateada.
+     */
     private JPanel crearTarjeta(String nombre, String talla, int stock, int precio) {
         JPanel tarjeta = new JPanel();
         tarjeta.setLayout(new BoxLayout(tarjeta, BoxLayout.Y_AXIS));
         tarjeta.setBackground(Color.WHITE);
         tarjeta.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(220, 210, 200)),
+                BorderFactory.createLineBorder(new Color(222, 212, 238)),
                 BorderFactory.createEmptyBorder(14, 14, 14, 14)
         ));
         tarjeta.setPreferredSize(new Dimension(190, 140));
 
         JLabel lblNombre = new JLabel(nombre);
         lblNombre.setFont(new Font("Arial", Font.BOLD, 15));
-        lblNombre.setForeground(marronOscuro);
+        lblNombre.setForeground(moradoOscuro);
 
         JLabel lblTalla = new JLabel("Talla: " + talla);
         lblTalla.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -223,7 +262,7 @@ public class VendedorView extends JFrame {
 
         JLabel lblPrecio = new JLabel("$" + formatearPrecio(precio));
         lblPrecio.setFont(new Font("Arial", Font.BOLD, 14));
-        lblPrecio.setForeground(cafe);
+        lblPrecio.setForeground(morado);
 
         tarjeta.add(lblNombre);
         tarjeta.add(Box.createRigidArea(new Dimension(0, 8)));
@@ -235,20 +274,33 @@ public class VendedorView extends JFrame {
         return tarjeta;
     }
 
-    // Convierte 45000 en "45.000" (formato de precio en pesos)
+    /**
+     * Convierte valores numéricos de precio en un formato con separadores de miles (ej: 45000 a 45.000).
+     * @param precio Valor numérico del precio.
+     * @return Cadena formateada.
+     */
     private String formatearPrecio(int precio) {
         return String.format("%,d", precio).replace(",", ".");
     }
 
+    /**
+     * Muestra un cuadro de diálogo con un mensaje de error.
+     * @param mensaje Mensaje a desplegar.
+     */
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Muestra un cuadro de diálogo con un mensaje de éxito.
+     * @param mensaje Mensaje a desplegar.
+     */
     public void mostrarExito(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Exito", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // ── GETTERS que usa el Controlador ──
+    // ── GETTERS QUE UTILIZA EL CONTROLADOR ──
+
     public JTextField getTxtBuscar() {
         return txtBuscar;
     }
@@ -269,7 +321,9 @@ public class VendedorView extends JFrame {
         return btnSalir;
     }
 
-    // Solo para ver rapido como se ve la ventana
+    /**
+     * Método principal (main): Permite probar y visualizar la ventana de manera independiente.
+     */
     public static void main(String[] args) {
         VendedorView vista = new VendedorView("Pedro Vendedor");
         vista.setVisible(true);
