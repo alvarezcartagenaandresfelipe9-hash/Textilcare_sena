@@ -11,6 +11,9 @@ import java.awt.event.KeyEvent;
 
 import java.util.List;
 
+import textilecare.view.LoginView;
+import textilecare.controller.LoginController;
+
 public class AdministradorController {
 
     private AdministradorView vista;
@@ -27,6 +30,15 @@ public class AdministradorController {
     }
 
     private void agregarListeners() {
+
+        // Boton "← Volver": regresa al Login
+        vista.getBtnVolver().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                volverAlLogin();
+            }
+        });
+
 
         // Boton "Clientes"
         vista.getBtnClientes().addActionListener(new ActionListener() {
@@ -156,4 +168,13 @@ public class AdministradorController {
     public String getRolActual() {
         return rolActual;
     }
+
+    // Cierra esta ventana y regresa a la pantalla de Login
+    private void volverAlLogin() {
+        vista.dispose();
+        LoginView login = new LoginView();
+        new LoginController(login);
+        login.setVisible(true);
+    }
+
 }

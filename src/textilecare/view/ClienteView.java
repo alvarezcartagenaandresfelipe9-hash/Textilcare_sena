@@ -47,10 +47,10 @@ public class ClienteView extends JFrame {
     private List<Integer> idsPrendas = new ArrayList<>();
 
     // Paleta de colores institucional para la interfaz del cliente (morada, igual que Login y Administrador)
-    private final Color morado = new Color(155, 89, 182);         // Color de acento para botones secundarios o interactivos
-    private final Color moradoOscuro = new Color(88, 24, 130);    // Color sólido fuerte para la barra lateral y los encabezados
-    private final Color fondoLila = new Color(243, 237, 250);     // Color de fondo general de toda la pantalla (un lila muy clarito)
-    private final Color grisTexto = new Color(110, 110, 110);     // Color gris para textos secundarios y subtítulos
+ private final Color morado = new Color(215, 155, 175);         
+private final Color moradoOscuro = new Color(145, 75, 95);      
+private final Color fondoLila = new Color(248, 240, 243);       
+private final Color grisTexto = new Color(110, 110, 110);    
 
     /**
      * Constructor principal: Inicializa la ventana principal del Cliente, sus dimensiones, restricciones y componentes de diseño.

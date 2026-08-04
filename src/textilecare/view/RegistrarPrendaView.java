@@ -38,8 +38,8 @@ public class RegistrarPrendaView extends JFrame {
     private JButton btnCancelar;
 
     // Paleta de colores institucional para mantener la coherencia visual
-    private final Color morado = new Color(155, 89, 182);         // Color de acento
-    private final Color moradoOscuro = new Color(88, 24, 130);     // Color principal para títulos y elementos destacados
+    private final Color morado = new Color(215, 155, 175);
+    private final Color moradoOscuro = new Color(145, 75, 95); 
 
     /**
      * Constructor principal: Inicializa la ventana de registro de prendas con un diseño de posicionamiento absoluto.

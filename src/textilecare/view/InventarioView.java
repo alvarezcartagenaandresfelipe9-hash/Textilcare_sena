@@ -58,9 +58,9 @@ public class InventarioView extends JFrame {
     private JButton btnPrendas, btnTecnicos, btnProveedores;
 
     // Paleta de colores institucional para mantener coherencia visual
-    private final Color morado = new Color(155, 89, 182);         // Color de acento institucional
-    private final Color moradoOscuro = new Color(88, 24, 130);     // Color principal para barra lateral y encabezados
-    private final Color fondoLila = new Color(243, 237, 250);     // Color de fondo general de la ventana (lila claro)
+   private final Color morado = new Color(215, 155, 175);       
+private final Color moradoOscuro = new Color(145, 75, 95);    
+private final Color fondoLila = new Color(248, 240, 243);     
 
     /**
      * Constructor principal: Inicializa la ventana de inventario, su diseño general, barra lateral y contenido central.
