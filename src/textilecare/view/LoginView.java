@@ -28,7 +28,7 @@ public class LoginView extends JFrame {
     private JLabel lblMensaje;
 
     public LoginView() {
-        setTitle("TextilCare - Iniciar Sesion");
+        setTitle("TextilCare - Iniciar Sesion - PRUEBA");
         setSize(900, 560);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
