@@ -7,7 +7,7 @@ import textilecare.view.TecnicoView;
 import textilecare.view.SupervisorView;
 import textilecare.view.VendedorView;
 import textilecare.view.AdministradorView;
-
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +41,7 @@ public class LoginController {
             vista.mostrarMensaje("Completa todos los campos.");
             return;
         }
+        
 
         Usuario usuario = modelo.buscarUsuario(documento, contrasena, rol);
 

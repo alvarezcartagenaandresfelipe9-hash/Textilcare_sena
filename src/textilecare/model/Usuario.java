@@ -5,7 +5,7 @@ import Conexion.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,23 +26,52 @@ public class Usuario {
     // Consulta la base de datos y devuelve un Usuario si las credenciales son correctas
     public Usuario buscarUsuario(String documento, String contrasena, String rol) {
         String sql = "SELECT id, nombre, estado FROM usuarios WHERE documento = ? AND contrasena = ? AND rol = ?";
+//incriptar
+        try (Connection cn = Conexion.conectar();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
 
+            String contraEncrypt = buscarcontraseña(documento);
+            BCrypt.Result resultado = BCrypt.verifyer().verify(contrasena.toCharArray(), contraEncrypt);
+
+            if (resultado.verified) {
+                System.out.println("funciono");
+                ps.setString(1, documento);
+                ps.setString(2, contraEncrypt);
+                ps.setString(3, rol);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setId(rs.getInt("id"));
+                    usuario.setDocumento(documento);
+                    usuario.setRol(rol);
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setEstado(rs.getString("estado"));
+                    return usuario;
+                }
+            }else{
+                System.out.println("no funciono");
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error al buscar usuario: " + ex.getMessage());
+        }
+
+        return null;
+    }
+    
+    private String buscarcontraseña(String documento) {
+        String sql = "SELECT contrasena FROM usuarios WHERE documento = ?";
+        String contraseña = "";
         try (Connection cn = Conexion.conectar();
              PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, documento);
-            ps.setString(2, contrasena);
-            ps.setString(3, rol);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                Usuario usuario = new Usuario();
-                usuario.setId(rs.getInt("id"));
-                usuario.setDocumento(documento);
-                usuario.setRol(rol);
-                usuario.setNombre(rs.getString("nombre"));
-                usuario.setEstado(rs.getString("estado"));
-                return usuario;
+                contraseña = rs.getString(1);
+                return contraseña;
             }
 
         } catch (Exception ex) {
@@ -168,12 +197,14 @@ public class Usuario {
 
         try (Connection cn = Conexion.conectar();
              PreparedStatement ps = cn.prepareStatement(sql)) {
-
+            
+            String hash = encriptarContraseña(contrasena);
+            
             ps.setString(1, nombre);
             ps.setString(2, documento);
             ps.setString(3, correo);
             ps.setString(4, telefono);
-            ps.setString(5, contrasena);
+            ps.setString(5, hash);
             ps.setString(6, rol);
             ps.executeUpdate();
             exito = true;
@@ -183,6 +214,10 @@ public class Usuario {
         }
 
         return exito;
+    }
+    
+    private String encriptarContraseña(String contraseña){
+        return BCrypt.withDefaults().hashToString(12, contraseña.toCharArray());
     }
 
     // ── GETTERS Y SETTERS ──
