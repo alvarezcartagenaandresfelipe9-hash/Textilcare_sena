@@ -51,8 +51,8 @@ public class FormularioReparacionView extends JFrame {
     private JButton btnCancelar;
 
     // Paleta de colores institucional (morada) y arreglo de meses para la gestión de fechas
-    private final Color morado = new Color(155, 89, 182);         // Color de acento institucional
-    private final Color fondoLila = new Color(243, 237, 250);     // Color de fondo general de la ventana (lila claro)
+    private final Color morado = new Color(215, 155, 175);         
+    private final Color fondoLila = new Color(248, 240, 243);    
     private final String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 
@@ -83,7 +83,7 @@ public class FormularioReparacionView extends JFrame {
     private void construirEncabezado(String tipoPrenda) {
         JLabel titulo = new JLabel("Actualizar: " + tipoPrenda);
         titulo.setFont(new Font("Serif", Font.BOLD, 18));
-        titulo.setForeground(new Color(88, 24, 130)); // Morado oscuro institucional
+        titulo.setForeground(new Color(215, 155, 175)); // Morado oscuro institucional
         titulo.setBounds(20, 15, 400, 30);
         add(titulo);
     }

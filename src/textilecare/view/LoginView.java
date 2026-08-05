@@ -129,7 +129,7 @@ public class LoginView extends JFrame {
         btnContinuar = new JButton("Continuar");
 
         // Este es el color de fondo del botón: un tono lila/rosado claro (RGB: 200, 145, 245)
-        btnContinuar.setBackground(new Color(81, 45, 168)); 
+        btnContinuar.setBackground(new Color(145, 75, 95)); 
 
 
         // Este es el color del texto de adentro del botón: BLANCO
@@ -166,11 +166,9 @@ public class LoginView extends JFrame {
 
                 Graphics2D g2 = (Graphics2D) g;
 
-                // Color de inicio del degradado (morado oscuro)
-                Color colorInicio = new Color(88, 24, 130);
-                // Color final del degradado (morado mas claro)
-                Color colorFin = new Color(155, 89, 182);
+                Color colorInicio = new Color(145, 75, 95);
 
+                Color colorFin = new Color(215, 155, 175);
                 // GradientPaint dibuja una transicion de un color a otro
                 GradientPaint degradado = new GradientPaint(0, 0, colorInicio, getWidth(), getHeight(), colorFin);
                 g2.setPaint(degradado);

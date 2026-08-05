@@ -42,14 +42,13 @@ public class AdministradorView extends JFrame {
     private JButton btnTecnicos;
     private JButton btnVendedores;
     private JButton btnRegistrar;
+    private JButton btnVolver;
     private JTextField txtBuscar;
     private JLabel lblTitulo;
 
-    // Paleta de colores morada, igual a la usada en LoginView, para que las pantallas se vean coherentes
-    private Color morado = new Color(155, 89, 182);         // Color de acento para los botones inactivos del menú lateral
-    private Color moradoOscuro = new Color(88, 24, 130);    // Color sólido y fuerte para la barra lateral y los encabezados de la tabla
-    private Color fondo = new Color(243, 237, 250);         // Color de fondo general de toda la pantalla (un lila muy clarito)
-
+private Color morado = new Color(215, 155, 175);
+private Color moradoOscuro = new Color(145, 75, 95);
+private Color fondo = new Color(248, 240, 243);
     /**
      * Constructor principal: Inicializa la ventana del Administrador, su tamaño, colores y componentes principales.
      * @param nombreAdmin Nombre del usuario administrador que se mostrará saludando en la barra lateral.
@@ -160,6 +159,17 @@ public class AdministradorView extends JFrame {
 
         // Empuja todo lo anterior hacia arriba, dejando un espacio libre flexible en la parte de abajo de la barra
         panel.add(Box.createVerticalGlue());
+
+        // Boton para volver al Login
+        btnVolver = new JButton("← Volver");
+        btnVolver.setFont(new Font("Arial", Font.BOLD, 13));
+        btnVolver.setBackground(morado);
+        btnVolver.setForeground(Color.WHITE);
+        btnVolver.setFocusPainted(false);
+        btnVolver.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnVolver.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        btnVolver.setMaximumSize(new Dimension(190, 36));
+        panel.add(btnVolver);
 
         return panel;
     }
@@ -375,6 +385,10 @@ public class AdministradorView extends JFrame {
 
     public JButton getBtnRegistrar() {
         return btnRegistrar;
+    }
+
+    public JButton getBtnVolver() {
+        return btnVolver;
     }
 
     public JTextField getTxtBuscar() {

@@ -32,8 +32,8 @@ public class EstadoPrendaView extends JFrame {
     private JButton btnVolver;
 
     // Paleta de colores institucional para mantener coherencia visual con el resto del sistema
-    private final Color morado = new Color(155, 89, 182);         // Color de acento institucional
-    private final Color fondoLila = new Color(243, 237, 250);     // Color de fondo general de la ventana (lila claro)
+    private final Color morado = new Color(215, 155, 175);
+    private final Color fondoLila = new Color(248, 240, 243);
 
     /**
      * Constructor principal: Inicializa la ventana, dimensiones, colores y distribución absoluta de los componentes.
