@@ -1,17 +1,18 @@
 package textilecare.model;
 
 import Conexion.Conexion;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
 
-    private int id;
+    private int    id;
     private String documento;
     private String correo;
     private String telefono;
@@ -20,58 +21,47 @@ public class Usuario {
     private String nombre;
     private String estado;
 
-    public Usuario() {
-    }
+    public Usuario() {}
 
-    // Consulta la base de datos y devuelve un Usuario si las credenciales son correctas
-    public Usuario buscarUsuario(String documento, String contrasena, String rol) {
-        String sql = "SELECT id, nombre, estado FROM usuarios WHERE documento = ? AND contrasena = ? AND rol = ?";
-//incriptar
-        try (Connection cn = Conexion.conectar();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+    // Busca un usuario solo con documento y contraseña (sin necesitar el rol)
+    // El rol lo devuelve la base de datos automáticamente
+    public Usuario buscarUsuario(String documento, String contrasena) {
 
-            String contraEncrypt = buscarcontraseña(documento);
-            BCrypt.Result resultado = BCrypt.verifyer().verify(contrasena.toCharArray(), contraEncrypt);
+        // Primero busca la contraseña encriptada guardada en la BD
+        String contraEncrypt = buscarContrasena(documento);
 
-            if (resultado.verified) {
-                System.out.println("funciono");
-                ps.setString(1, documento);
-                ps.setString(2, contraEncrypt);
-                ps.setString(3, rol);
-
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    Usuario usuario = new Usuario();
-                    usuario.setId(rs.getInt("id"));
-                    usuario.setDocumento(documento);
-                    usuario.setRol(rol);
-                    usuario.setNombre(rs.getString("nombre"));
-                    usuario.setEstado(rs.getString("estado"));
-                    return usuario;
-                }
-            }else{
-                System.out.println("no funciono");
-            }
-
-        } catch (Exception ex) {
-            System.out.println("Error al buscar usuario: " + ex.getMessage());
+        // Si no encontró ningún usuario con ese documento, retorna null
+        if (contraEncrypt == null) {
+            return null;
         }
 
-        return null;
-    }
-    
-    private String buscarcontraseña(String documento) {
-        String sql = "SELECT contrasena FROM usuarios WHERE documento = ?";
-        String contraseña = "";
+        // Verifica si la contraseña escrita coincide con el hash guardado en la BD
+        BCrypt.Result resultado = BCrypt.verifyer().verify(contrasena.toCharArray(), contraEncrypt);
+
+        // Si la contraseña no coincide, retorna null
+        if (!resultado.verified) {
+            System.out.println("Contraseña incorrecta.");
+            return null;
+        }
+
+        // Si la contraseña es correcta, busca el usuario completo incluyendo el rol
+        String sql = "SELECT id, nombre, rol, estado FROM usuarios WHERE documento = ?";
+
         try (Connection cn = Conexion.conectar();
              PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, documento);
 
             ResultSet rs = ps.executeQuery();
+
             if (rs.next()) {
-                contraseña = rs.getString(1);
-                return contraseña;
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("id"));
+                usuario.setDocumento(documento);
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setRol(rs.getString("rol"));       // ← el rol viene de la BD
+                usuario.setEstado(rs.getString("estado"));
+                return usuario;
             }
 
         } catch (Exception ex) {
@@ -81,7 +71,28 @@ public class Usuario {
         return null;
     }
 
-    // Trae los nombres de todos los usuarios con un rol especifico (para llenar combos)
+    // Busca solo la contraseña encriptada de un usuario por su documento
+    private String buscarContrasena(String documento) {
+        String sql = "SELECT contrasena FROM usuarios WHERE documento = ?";
+
+        try (Connection cn = Conexion.conectar();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, documento);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("contrasena");
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error al buscar contraseña: " + ex.getMessage());
+        }
+
+        return null;
+    }
+
+    // Trae los nombres de todos los usuarios con un rol específico (para llenar combos)
     public List<String> listarPorRol(String rol) {
         List<String> nombres = new ArrayList<>();
         String sql = "SELECT nombre FROM usuarios WHERE rol = ? AND estado = 'Activo'";
@@ -103,7 +114,7 @@ public class Usuario {
         return nombres;
     }
 
-    // Trae TODOS los datos (no solo el nombre) de los usuarios de un rol, para la tabla del Administrador
+    // Trae todos los datos de los usuarios de un rol (para la tabla del Administrador)
     public List<Usuario> listarPorRolCompleto(String rol) {
         List<Usuario> lista = new ArrayList<>();
         String sql = "SELECT id, nombre, documento, correo, telefono, estado FROM usuarios WHERE rol = ?";
@@ -133,7 +144,7 @@ public class Usuario {
         return lista;
     }
 
-    // Busca usuarios de un rol especifico cuyo nombre o documento contenga el texto buscado
+    // Busca usuarios cuyo nombre o documento contenga el texto buscado
     public List<Usuario> buscarPorTextoYRol(String texto, String rol) {
         List<Usuario> lista = new ArrayList<>();
         String sql = "SELECT id, nombre, documento, correo, telefono, estado FROM usuarios "
@@ -189,17 +200,19 @@ public class Usuario {
         return idEncontrado;
     }
 
-    // Registra un usuario nuevo con el rol indicado. Devuelve false si el documento ya existe o hay un error.
-    public boolean registrar(String nombre, String documento, String correo, String telefono, String contrasena, String rol) {
+    // Registra un usuario nuevo con contraseña encriptada con BCrypt
+    public boolean registrar(String nombre, String documento, String correo,
+                             String telefono, String contrasena, String rol) {
         String sql = "INSERT INTO usuarios (nombre, documento, correo, telefono, contrasena, rol, estado) "
                    + "VALUES (?, ?, ?, ?, ?, ?, 'Activo')";
         boolean exito = false;
 
         try (Connection cn = Conexion.conectar();
              PreparedStatement ps = cn.prepareStatement(sql)) {
-            
-            String hash = encriptarContraseña(contrasena);
-            
+
+            // Encripta la contraseña antes de guardarla
+            String hash = encriptarContrasena(contrasena);
+
             ps.setString(1, nombre);
             ps.setString(2, documento);
             ps.setString(3, correo);
@@ -215,73 +228,35 @@ public class Usuario {
 
         return exito;
     }
-    
-    private String encriptarContraseña(String contraseña){
-        return BCrypt.withDefaults().hashToString(12, contraseña.toCharArray());
+
+    // Encripta una contraseña usando BCrypt con nivel de seguridad 12
+    private String encriptarContrasena(String contrasena) {
+        return BCrypt.withDefaults().hashToString(12, contrasena.toCharArray());
     }
 
-    // ── GETTERS Y SETTERS ──
-    public int getId() {
-        return id;
-    }
+    // ── GETTERS Y SETTERS ─────────────────────────────────────────────────────
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int    getId()          { return id;    }
+    public void   setId(int id)    { this.id = id; }
 
-    public String getDocumento() {
-        return documento;
-    }
+    public String getDocumento()                 { return documento;           }
+    public void   setDocumento(String documento) { this.documento = documento; }
 
-    public void setDocumento(String documento) {
-        this.documento = documento;
-    }
+    public String getCorreo()              { return correo;       }
+    public void   setCorreo(String correo) { this.correo = correo;}
 
-    public String getCorreo() {
-        return correo;
-    }
+    public String getTelefono()                { return telefono;         }
+    public void   setTelefono(String telefono) { this.telefono = telefono;}
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+    public String getContrasena()                  { return contrasena;           }
+    public void   setContrasena(String contrasena) { this.contrasena = contrasena;}
 
-    public String getTelefono() {
-        return telefono;
-    }
+    public String getRol()           { return rol;    }
+    public void   setRol(String rol) { this.rol = rol;}
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+    public String getNombre()              { return nombre;       }
+    public void   setNombre(String nombre) { this.nombre = nombre;}
 
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+    public String getEstado()              { return estado;       }
+    public void   setEstado(String estado) { this.estado = estado;}
 }
