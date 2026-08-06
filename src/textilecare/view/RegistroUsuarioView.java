@@ -35,7 +35,7 @@ public class RegistroUsuarioView extends JFrame {
     private JButton btnCancelar;
 
     // Paleta de colores institucional compartida en el sistema
-    private final Color morado = new Color(155, 89, 182); // Color de acento institucional
+    private final Color morado = new Color(215, 155, 175); // Color de acento institucional
 
     /**
      * Constructor principal: Inicializa la ventana de registro de usuarios configurando
@@ -48,7 +48,7 @@ public class RegistroUsuarioView extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
-        getContentPane().setBackground(new Color(243, 237, 250));
+        getContentPane().setBackground(new Color(248, 240, 243));
 
         // ── TÍTULO DE LA VENTANA ──
         JLabel titulo = new JLabel("Registrar " + rol, SwingConstants.CENTER);
