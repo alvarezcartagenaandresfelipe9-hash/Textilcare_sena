@@ -1,14 +1,11 @@
 package textilecare.model;
 
-// Importa la clase de conexión para gestionar la comunicación con la base de datos
 import Conexion.Conexion;
 
-// Importa clases de JDBC para manejar conexiones, consultas preparadas y conjuntos de resultados
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-// Importa clases para el manejo de listas dinámicas
 import java.util.ArrayList;
 import java.util.List;
 

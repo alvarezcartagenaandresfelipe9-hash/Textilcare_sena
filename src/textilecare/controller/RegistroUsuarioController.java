@@ -21,9 +21,10 @@ public class RegistroUsuarioController {
         agregarListeners();
     }
 
+    // Método para conectar los botones de la vista con las acciones del controlador
     private void agregarListeners() {
 
-        // Boton "Guardar": el ActionEvent 'e' avisa que hubo clic, y ahi llamamos a guardar()
+        // Botón "Guardar": Cuando se hace clic, ejecuta el método guardar()
         vista.getBtnGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -31,7 +32,7 @@ public class RegistroUsuarioController {
             }
         });
 
-        // Boton "Cancelar": el ActionEvent 'e' avisa el clic, y cerramos la ventana
+        // Botón "Cancelar": Cierra la ventana actual sin guardar nada
         vista.getBtnCancelar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,9 +41,12 @@ public class RegistroUsuarioController {
         });
     }
 
+    // Método principal que valida todos los campos antes de enviar los datos al modelo
     private void guardar() {
 
-        // 1. Nombre: obligatorio, solo letras y espacios, minimo 3 caracteres
+        // ==========================================
+        // 1. VALIDACIÓN DEL NOMBRE
+        // ==========================================
         String nombre = vista.getTxtNombre().getText().trim();
         if (nombre.isEmpty()) {
             vista.mostrarError("El nombre es obligatorio.");
@@ -52,71 +56,91 @@ public class RegistroUsuarioController {
             vista.mostrarError("El nombre debe tener al menos 3 caracteres.");
             return;
         }
+        // Valida que solo tenga letras (incluyendo tildes y eñes) y espacios
         if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
             vista.mostrarError("El nombre solo puede contener letras y espacios.");
             return;
         }
 
-        // 2. Documento: obligatorio, solo numeros (sin signos ni letras), entre 6 y 15 digitos
+        // ==========================================
+        // 2. VALIDACIÓN DEL DOCUMENTO (Actualizado a 6-10 dígitos)
+        // ==========================================
         String documento = vista.getTxtDocumento().getText().trim();
         if (documento.isEmpty()) {
             vista.mostrarError("El documento es obligatorio.");
             return;
         }
+        // Valida que sean exclusivamente números
         if (!documento.matches("[0-9]+")) {
-            vista.mostrarError("El documento solo puede contener numeros, sin signos ni letras.");
+            vista.mostrarError("El documento solo puede contener números, sin signos ni letras.");
             return;
         }
-        if (documento.length() < 6 || documento.length() > 15) {
-            vista.mostrarError("El documento debe tener entre 6 y 15 digitos.");
+        // Restricción solicitada: mínimo 6 y máximo 10 dígitos
+        if (documento.length() < 6 || documento.length() > 10) {
+            vista.mostrarError("El documento debe tener entre 6 y 10 dígitos.");
             return;
         }
 
-        // 3. Correo: obligatorio, con formato valido (algo@algo.algo)
+        // ==========================================
+        // 3. VALIDACIÓN DEL CORREO (Más estricta)
+        // ==========================================
         String correo = vista.getTxtCorreo().getText().trim();
         if (correo.isEmpty()) {
-            vista.mostrarError("El correo es obligatorio,registre un correo valido.");
+            vista.mostrarError("El correo es obligatorio, registre un correo válido.");
             return;
         }
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            vista.mostrarError("El correo no tiene un formato valido. Ejemplo: nombre@dominio.com");
+        
+        // Validación mejorada para evitar errores comunes:
+        // - Evita que empiece o termine con un punto.
+        // - Evita puntos seguidos (..).
+        // - Evita que haya un punto justo antes o después del arroba (ej: .@ o @.).
+        String patronCorreo = "^[a-zA-Z0-9]([a-zA-Z0-9._%+-]*[a-zA-Z0-9])?@[a-zA-Z0-9]([a-zA-Z0-9.-]*[a-zA-Z0-9])?\\.[a-zA-Z]{2,}$";
+        
+        if (!correo.matches(patronCorreo) || correo.contains("..")) {
+            vista.mostrarError("El correo no tiene un formato válido (ej: usuario@dominio.com, sin puntos mal ubicados).");
             return;
         }
 
-        // 4. Telefono: opcional, pero si se llena debe ser solo numeros de 7 a 10 digitos
+        // ==========================================
+        // 4. VALIDACIÓN DEL TELÉFONO (Opcional)
+        // ==========================================
         String telefono = vista.getTxtTelefono().getText().trim();
         if (!telefono.isEmpty()) {
             if (!telefono.matches("[0-9]+")) {
-                vista.mostrarError("El telefono solo puede contener numeros.");
+                vista.mostrarError("El teléfono solo puede contener números.");
                 return;
             }
             if (telefono.length() < 7 || telefono.length() > 10) {
-                vista.mostrarError("El telefono debe tener entre 7 y 10 digitos.");
+                vista.mostrarError("El teléfono debe tener entre 7 y 10 dígitos.");
                 return;
             }
         }
 
-        // 5. Contrasena: obligatoria, minimo 4 caracteres
+        // ==========================================
+        // 5. VALIDACIÓN DE LA CONTRASEÑA
+        // ==========================================
         String contrasena = new String(vista.getTxtContrasena().getPassword()).trim();
         if (contrasena.isEmpty()) {
-            vista.mostrarError("La contrasena es obligatoria.");
+            vista.mostrarError("La contraseña es obligatoria.");
             return;
         }
         if (contrasena.length() < 4) {
-            vista.mostrarError("La contrasena debe tener al menos 4 caracteres.");
+            vista.mostrarError("La contraseña debe tener al menos 4 caracteres.");
             return;
         }
 
-        // 6. Si todo paso las validaciones, se intenta guardar
+        // ==========================================
+        // 6. REGISTRO EN LA BASE DE DATOS
+        // ==========================================
         boolean guardado = modelo.registrar(nombre, documento, correo, telefono, contrasena, rol);
 
         if (guardado) {
             vista.mostrarExito(rol + " registrado correctamente.");
             vista.limpiarFormulario();
-            controladorAdmin.recargarSeccionActual();
-            vista.dispose();
+            controladorAdmin.recargarSeccionActual(); // Actualiza la tabla del administrador
+            vista.dispose(); // Cierra la ventana de registro
         } else {
-            vista.mostrarError("Ocurrio un error al registrar el usuario. Verifica que el documento no este repetido.");
+            vista.mostrarError("Ocurrió un error al registrar el usuario. Verifica que el documento no esté repetido.");
         }
     }
 }
