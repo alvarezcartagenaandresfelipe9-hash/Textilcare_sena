@@ -50,9 +50,9 @@ public class SupervisorView extends JFrame {
     private List<String> tiposPrendas = new ArrayList<>();
 
     // Paleta de colores institucional compartida en el sistema
-    private final Color morado = new Color(155, 89, 182);         // Color de acento
-    private final Color moradoOscuro = new Color(88, 24, 130);     // Color principal (barra lateral y encabezados)
-    private final Color fondoLila = new Color(243, 237, 250);      // Color de fondo para paneles de contenido
+    private final Color morado = new Color(215, 155, 175);         // Color de acento
+    private final Color moradoOscuro = new Color(145, 75, 95);     // Color principal (barra lateral y encabezados)
+    private final Color fondoLila = new Color(248, 240, 243);      // Color de fondo para paneles de contenido
 
     /**
      * Constructor principal: Inicializa la ventana de la supervisoría configurando

@@ -1,7 +1,7 @@
 package textilecare.model;
 
 import Conexion.Conexion;
-import at.favre.lib.crypto.bcrypt.BCrypt;
+// import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +27,7 @@ public class Usuario {
     // El rol lo devuelve la base de datos automáticamente
     public Usuario buscarUsuario(String documento, String contrasena) {
 
+        /* ── CÓDIGO DE ENCRIPTACIÓN COMENTADO PARA EVITAR CONFLICTOS ──
         // Primero busca la contraseña encriptada guardada en la BD
         String contraEncrypt = buscarContrasena(documento);
 
@@ -43,14 +44,16 @@ public class Usuario {
             System.out.println("Contraseña incorrecta.");
             return null;
         }
+        ──────────────────────────────────────────────────────────── */
 
-        // Si la contraseña es correcta, busca el usuario completo incluyendo el rol
-        String sql = "SELECT id, nombre, rol, estado FROM usuarios WHERE documento = ?";
+        // Si la contraseña es correcta, busca el usuario completo incluyendo el rol y validando contraseña plana
+        String sql = "SELECT id, nombre, rol, estado FROM usuarios WHERE documento = ? AND contrasena = ?";
 
         try (Connection cn = Conexion.conectar();
              PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, documento);
+            ps.setString(2, contrasena);
 
             ResultSet rs = ps.executeQuery();
 
@@ -72,6 +75,7 @@ public class Usuario {
     }
 
     // Busca solo la contraseña encriptada de un usuario por su documento
+    /*
     private String buscarContrasena(String documento) {
         String sql = "SELECT contrasena FROM usuarios WHERE documento = ?";
 
@@ -91,6 +95,7 @@ public class Usuario {
 
         return null;
     }
+    */
 
     // Trae los nombres de todos los usuarios con un rol específico (para llenar combos)
     public List<String> listarPorRol(String rol) {
@@ -200,9 +205,9 @@ public class Usuario {
         return idEncontrado;
     }
 
-    // Registra un usuario nuevo con contraseña encriptada con BCrypt
+    // Registra un usuario nuevo sin encriptación (contraseña plana)
     public boolean registrar(String nombre, String documento, String correo,
-                             String telefono, String contrasena, String rol) {
+                               String telefono, String contrasena, String rol) {
         String sql = "INSERT INTO usuarios (nombre, documento, correo, telefono, contrasena, rol, estado) "
                    + "VALUES (?, ?, ?, ?, ?, ?, 'Activo')";
         boolean exito = false;
@@ -210,14 +215,13 @@ public class Usuario {
         try (Connection cn = Conexion.conectar();
              PreparedStatement ps = cn.prepareStatement(sql)) {
 
-            // Encripta la contraseña antes de guardarla
-            String hash = encriptarContrasena(contrasena);
+            // String hash = encriptarContrasena(contrasena);
 
             ps.setString(1, nombre);
             ps.setString(2, documento);
             ps.setString(3, correo);
             ps.setString(4, telefono);
-            ps.setString(5, hash);
+            ps.setString(5, contrasena);
             ps.setString(6, rol);
             ps.executeUpdate();
             exito = true;
@@ -229,41 +233,80 @@ public class Usuario {
         return exito;
     }
 
-    // Encripta una contraseña usando BCrypt con nivel de seguridad 12
+    // Encripta una contraseña usando BCrypt con nivel de seguridad 12 (Comentado)
+    /*
     private String encriptarContrasena(String contrasena) {
         return BCrypt.withDefaults().hashToString(12, contrasena.toCharArray());
     }
+    */
 
     // ── GETTERS Y SETTERS ─────────────────────────────────────────────────────
 
-    public int    getId()     
-    { return id;    }
-    public void   setId(int id)    { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getDocumento()          
-    { return documento;           }
-    public void   setDocumento(String documento) { this.documento = documento; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getCorreo()        
-    { return correo;       }
-    public void   setCorreo(String correo) { this.correo = correo;}
+    public String getDocumento() {
+        return documento;
+    }
 
-    public String getTelefono()      
-    { return telefono;         }
-    public void   setTelefono(String telefono) { this.telefono = telefono;}
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
 
-    public String getContrasena()    
-    { return contrasena;           }
-    public void   setContrasena(String contrasena) { this.contrasena = contrasena;}
+    public String getCorreo() {
+        return correo;
+    }
 
-    public String getRol()    
-    { return rol;    }
-    public void   setRol(String rol) { this.rol = rol;}
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 
-    public String getNombre()       
-    { return nombre;       }
-    public void   setNombre(String nombre) { this.nombre = nombre;}
+    public String getTelefono() {
+        return telefono;
+    }
 
-    public String getEstado()              { return estado;       }
-    public void   setEstado(String estado) { this.estado = estado;}
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }

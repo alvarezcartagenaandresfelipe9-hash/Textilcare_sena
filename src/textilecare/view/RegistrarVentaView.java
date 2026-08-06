@@ -31,8 +31,8 @@ public class RegistrarVentaView extends JDialog {
     private DefaultTableModel modeloTabla;
     private JLabel lblTotal;
 
-    private final Color morado = new Color(155, 89, 182);
-    private final Color moradoOscuro = new Color(88, 24, 130);
+    private final Color morado = new Color(215, 155, 175);
+    private final Color moradoOscuro = new Color(145, 75, 95);
     private final Color verde = new Color(50, 160, 60);
 
     public RegistrarVentaView(JFrame padre) {
@@ -198,21 +198,5 @@ public class RegistrarVentaView extends JDialog {
 
     public JButton getBtnCancelar() {
         return btnCancelar;
-    }
-
-    /**
-     * Metodo principal para probar esta vista de forma independiente.
-     * Como es un JDialog, necesita una ventana "padre" (aunque sea invisible) para poder mostrarse.
-     */
-    public static void main(String[] args) {
-        JFrame ventanaBase = new JFrame();
-        ventanaBase.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        RegistrarVentaView vista = new RegistrarVentaView(ventanaBase);
-        vista.cargarProductos(List.of("Hilo negro", "Boton plastico", "Cierre metalico"));
-        vista.agregarFilaItem("Hilo negro", 2, 2000, 4000);
-        vista.setTotal(4000);
-
-        vista.setVisible(true);
     }
 }
