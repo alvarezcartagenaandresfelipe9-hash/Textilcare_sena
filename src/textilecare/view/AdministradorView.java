@@ -402,6 +402,20 @@ private Color fondo = new Color(248, 240, 243);
         AdministradorView vista = new AdministradorView("Admin");
         vista.setVisible(true);
     }
+
+    /**
+     *
+     * @author monst
+     */
+    public static class ProductoSinStockView {
+
+        /**
+         * @param args the command line arguments
+         */
+        public static void main(String[] args) {
+            // TODO code application logic here
+        }
+    }
 }
 
 /**

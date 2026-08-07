@@ -352,4 +352,32 @@ public class Producto {
     public void setNombreProveedor(String nombreProveedor) {
         this.nombreProveedor = nombreProveedor;
     }
+    
+    // Trae solo los productos de tienda que están AGOTADOS (stock = 0)
+public List<Producto> listarProductosSinStock() {
+    List<Producto> lista = new ArrayList<>();
+    String sql = "SELECT id, nombre, talla, stock, precio, estado FROM productos "
+               + "WHERE categoria = 'Ropa' AND stock = 0";
+
+    try (Connection cn = Conexion.conectar();
+         PreparedStatement ps = cn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            Producto p = new Producto();
+            p.setId(rs.getInt("id"));
+            p.setNombre(rs.getString("nombre"));
+            p.setTalla(rs.getString("talla"));
+            p.setStock(rs.getInt("stock"));
+            p.setPrecio(rs.getInt("precio"));
+            p.setEstado(rs.getString("estado"));
+            lista.add(p);
+        }
+
+    } catch (Exception ex) {
+        System.out.println("Error al listar productos sin stock: " + ex.getMessage());
+    }
+
+    return lista;
+}
 }
