@@ -23,7 +23,7 @@ public class ProductoSinStockController {
         // Carga los productos sin stock al abrir la ventana
         cargarProductosSinStock();
 
-        // Conecta el botón cerrar con su acción
+        // Conecta el botón cerrar
         agregarListeners();
     }
 
@@ -33,10 +33,8 @@ public class ProductoSinStockController {
         vista.mostrarProductosSinStock(sinStock);
     }
 
-    // Conecta los botones con sus acciones
+    // Conecta el botón "Cerrar" con la acción de cerrar la ventana
     private void agregarListeners() {
-
-        // Botón "Cerrar" → cierra la ventana de productos sin stock
         vista.getBtnCerrar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
